@@ -52,7 +52,7 @@
     ]
   };
 
-  for(const r of requests){
+  for(const r of [...seed,...requests]){
     if(demoDetails[r.id]&&!r.answers)r.answers=demoDetails[r.id];
   }
 
