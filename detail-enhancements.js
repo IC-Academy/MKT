@@ -17,6 +17,26 @@
       ['¿Por dónde vas a compartir el material con tu público?','Redes Sociales'],
       ['Comentarios o instrucciones adicionales','Priorizar fecha, ubicación y documentos requeridos. Mantener lectura clara en celular.']
     ],
+    'MKT-003':[
+      ['Nombre del reclutador','Solicitante de Operaciones'],
+      ['Requieres','Nueva campaña'],
+      ['Fecha de solicitud de campaña','5 oct 2026'],
+      ['Fecha de inicio de campaña','9 oct 2026'],
+      ['Duración','4 días'],
+      ['Fecha de finalización de campaña','12 oct 2026'],
+      ['Región de la campaña solicitada','Metropolitana'],
+      ['Ciudad operativa de la campaña','Ciudad de México'],
+      ['Cliente',['Home Depot','Uber']],
+      ['Motivo de solicitud de campaña','APOYO'],
+      ['¿Cuántas personas requieres contratar?','25'],
+      ['Requieres imagen o texto para tu campaña','Ambas'],
+      ['Si requieres solo texto, colócalo aquí','Guardias de seguridad para cobertura operativa. Contratación inmediata, prestaciones de ley y oportunidades de crecimiento.'],
+      ['Información de la vacante','Guardias de seguridad para servicios operativos en zona metropolitana. Turnos de 12x12, secundaria concluida, documentación básica completa y disponibilidad inmediata. Lugar de servicio por confirmar con Operaciones.'],
+      ['Salario de la vacante','$10,500 MXN mensuales + prestaciones'],
+      ['Beneficios adicionales','Prestaciones de ley, uniformes sin costo, capacitación pagada y posibilidad de crecimiento.'],
+      ['Teléfono del reclutador','55 0000 0000'],
+      ['Ejemplo o materiales a considerar',['vacante-operativa-referencia.jpg','perfil-operativo.pdf']]
+    ],
     'MKT-006':[
       ['Área solicitante','Operaciones'],
       ['Responsable que solicita','Solicitante de Operaciones'],
