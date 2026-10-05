@@ -6,7 +6,7 @@ Revisión visual de Microsoft Forms autenticado, octubre 2026. No se enviaron re
 
 Origen: solicitud de diseño OCTUBRE, cuatro páginas. La última solo contiene el mensaje de confirmación. El portal reemplaza esa página por un resumen.
 
-- Solicitante: 19 áreas y nombre/apellido del responsable.
+- Solicitante: 19 áreas, descripción obligatoria para Otro y nombre/apellido del responsable.
 - Entrega: impreso o digital; catálogo específico de formatos y tiempos estimados; descripción obligatoria si se elige Otro; orientación cuadrada, vertical u horizontal; medidas exactas en cm para impreso o cm/píxeles/no para digital; publicación en redes opcional solo en digital; fecha deseada de entrega.
 - Contenido: objetivo, título, texto, idioma (Español/Inglés, una solicitud por idioma), logo adicional Sí/No y nombres obligatorios si Sí, canal opcional (correo, WhatsApp, Teams, redes o físico), comentarios obligatorios.
 - El original repite Placa en el catálogo impreso; se muestra una sola vez.
