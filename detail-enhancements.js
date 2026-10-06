@@ -72,7 +72,14 @@
     ]
   };
 
+  const communicationDemo={
+    'MKT-001':{category:'Institucional',purpose:'Informar',objective:'Dar a conocer la actualización de políticas y su entrada en vigor.',information:'A partir del 12 de octubre de 2026 entra en vigor la actualización de políticas internas. Consulta la versión vigente y dirige tus dudas al área de Calidad. Contenido de ejemplo para esta demo.',language:'Español'},
+    'MKT-005':{category:'Cultura / Experiencia',purpose:'Informar',objective:'Dar la bienvenida a las nuevas personas del equipo.',information:'¡Bienvenidos a Inter-Con! Nos alegra contar con ustedes. Conozcan nuestros valores, canales de atención y actividades de integración. El área solicitante validará nombres y fotografías antes de publicar. Contenido de ejemplo.',language:'Español'},
+    'MKT-008':{category:'Cultura / Experiencia',purpose:'Lograr asistencia',objective:'Recordar la capacitación general y facilitar la asistencia.',information:'Capacitación general · 16 de octubre de 2026, 10:00 horas, modalidad en línea. Consulta la invitación institucional para acceder. Confirma tu asistencia con Capacitación. Contenido de ejemplo.',language:'Español'}
+  };
+  demoDetails['MKT-004']=[['Nombre del reclutador','Solicitante de Reclutamiento'],['Fecha del reporte','12 oct 2026'],['Fecha de campaña solicitada','5 oct 2026'],['Región','Nor Este'],['Ciudad','Monterrey'],['Presupuesto gastado','$1,200 MXN · ejemplo'],['Compilado de conversaciones recibidas','conversaciones-demo.pdf · archivo ilustrativo, sin descarga'],['Evidencia de mensajes con cita a oficinas','citas-demo.pdf · archivo ilustrativo, sin descarga'],['Preguntas posteriores a evidencias','Pendientes de verificar en el formulario original']];
   for(const r of [...seed,...requests]){
+    if(communicationDemo[r.id])r.communication={generalScope:'Sí',generalImpact:'Sí',company:'Inter-Con Mexico S.A de C.V',area:r.area,title:r.title,date:r.date,audiences:['Toda la empresa'],links:'',otherAudience:'',contactName:r.person,contactEmail:'contacto@example.com',contactPhone:'55 0000 0000',...communicationDemo[r.id]};
     if(demoDetails[r.id]&&!r.answers)r.answers=demoDetails[r.id];
   }
 
@@ -157,21 +164,21 @@
     #detailTitle{margin-bottom:18px}
     .detail-section{border:1px solid #d9e0e8;border-radius:14px;padding:18px;margin:0 0 18px;background:#fff}
     .detail-section-head{display:flex;gap:12px;align-items:flex-start;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid #e7ebf0}
-    .detail-section-head>span{display:grid;place-items:center;flex:0 0 32px;height:32px;border-radius:9px;background:#fff3c8;color:#8c6500;font-size:12px;font-weight:800}
-    .detail-section-head p{margin:0 0 2px;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#718096}
+    .detail-section-head>span{display:grid;place-items:center;flex:0 0 32px;height:32px;border-radius:9px;background:#fff3c8;color:#8c6500;font-size:14px;font-weight:800}
+    .detail-section-head p{margin:0 0 2px;font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#718096}
     .detail-section-head h3{margin:0 0 3px;font-size:17px;color:#13233d}
     .detail-section-head small{display:block;color:#69778c;line-height:1.45}
     .request-brief-section{background:#fbfcfe}
     .request-brief-section .detail-data{margin-top:0}
-    .brief-label{margin:16px 0 6px;font-size:10px;font-weight:800;letter-spacing:.12em;color:#718096}
+    .brief-label{margin:16px 0 6px;font-size:14px;font-weight:800;letter-spacing:.12em;color:#718096}
     .request-brief-section .brief{border-left:3px solid #fec52a;background:#fff8df;padding:14px 16px;border-radius:0 10px 10px 0;line-height:1.55;color:#24344f}
     .brief-fields-title{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:20px 0 8px}
     .brief-fields-title strong{font-size:14px;color:#13233d}
-    .brief-fields-title span{font-size:11px;color:#7b8798}
+    .brief-fields-title span{font-size:14px;color:#7b8798}
     .request-brief-section .comm-review{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #e1e6ed;border-radius:10px;overflow:hidden;background:#fff}
     .request-brief-section .comm-review>div{padding:12px 14px;border-bottom:1px solid #edf0f4}
     .request-brief-section .comm-review>div:nth-child(odd){border-right:1px solid #edf0f4}
-    .request-brief-section .comm-review dt{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#7a8798;margin-bottom:4px}
+    .request-brief-section .comm-review dt{font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:#7a8798;margin-bottom:4px}
     .request-brief-section .comm-review dd{margin:0;color:#172944;line-height:1.45;white-space:pre-wrap}
     .follow-up-section>.edit-grid{margin-top:0}
     .follow-up-section>h3{margin-top:20px}
