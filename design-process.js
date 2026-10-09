@@ -1,4 +1,7 @@
 (() => {
+  // Prototipado has its own required references and must use that service.
+  const prototypeFormatIndex=printedFormats.findIndex(f=>f.startsWith('Prototipado'));
+  if(prototypeFormatIndex>=0)printedFormats.splice(prototypeFormatIndex,1);
   const root = document.querySelector('#diseno');
   const existing = document.createElement('div');
   existing.className = 'design-material-form';
