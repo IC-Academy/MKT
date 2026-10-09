@@ -22,12 +22,13 @@ jobs:
         run: |
           node --check app.js
           node --check detail-enhancements.js
+          node --check design-process.js
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Prepare public files
         run: |
           mkdir -p _site
-          cp index.html style.css app.js detail-enhancements.js favicon.svg .nojekyll _site/
+          cp index.html style.css app.js detail-enhancements.js design-process.js favicon.svg .nojekyll _site/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
