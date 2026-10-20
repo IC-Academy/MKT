@@ -24,6 +24,10 @@ jobs:
           node --check detail-enhancements.js
           node --check design-process.js
           node --check campaign-brief.js
+      - name: Check portal behavior
+        run: |
+          npm install --prefix "$RUNNER_TEMP/mkt-tests" --no-audit --no-fund jsdom@26.1.0
+          MKT_JSDOM="$RUNNER_TEMP/mkt-tests/node_modules/jsdom" node tests/portal-smoke.cjs
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Prepare public files
