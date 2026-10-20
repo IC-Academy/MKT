@@ -17,12 +17,14 @@ function check(selector,value=true){const node=el(selector);node.checked=value;n
 function click(selector){el(selector).click();}
 function evaluate(code){return vm.runInContext(code,ctx);}
 function step(prefix,n){assert.equal(el('#'+prefix+' [data-native-step="'+n+'"]').hidden,false);}
+assert.equal(doc.querySelectorAll('#formCards .card').length,5);
+assert.deepEqual([...doc.querySelectorAll('#formCards .card h2')].map(node=>node.textContent),['Solicitud de comunicado','Solicitud de diseño','Campaña de reclutamiento','Efectividad de campañas','Proyectos']);
+assert.equal(el('.brand-logo-crop img').getAttribute('src'),'assets/mkt-logo-source.png');
 assert.equal(evaluate("campaignEndDate('2026-10-30','4 días')"),'2026-11-02');
 assert.equal(evaluate("campaignEndDate('2028-02-28','3 días')"),'2028-03-01');
 assert.equal(evaluate("campaignEndDate('2026-12-31','2 días')"),'2027-01-01');
 assert.equal(evaluate("campaignEndDate('','2 días')"),'');
 click('#formCards [data-view="campana"]');
-click('[data-campaign="recruitment"]');
 set('#campana-person','Prueba automática');
 set('#campana-request','Nueva campaña');
 set('#campana-requested','2026-10-20');
@@ -83,12 +85,13 @@ assert.doesNotMatch(el('#diseno .comm-aside[data-photo-location]').textContent,/
 click('.service-return');click('[data-design-service="prototype"]');
 assert.equal(el('#diseno [data-field="articles"]').querySelectorAll('input').length,16);
 assert.equal(el('#design-prototype-quantity').previousElementSibling.classList.contains('important-help'),true);
-click('#formCards [data-view="campana"]');
-click('[data-campaign="brief"]');
-check('#campana input[name="zone"][value="Regional"]');
-check('#campana input[name="zone"][value="Interna"]');
+click('#formCards [data-view="proyectos"]');
+assert.equal(doc.body.dataset.view,'proyectos');
+assert.equal(el('#proyectos').hidden,false);
+check('#proyectos input[name="zone"][value="Regional"]');
+check('#proyectos input[name="zone"][value="Interna"]');
 assert.equal(el('#brief-otherZone').closest('[data-field]').hidden,false);
-assert.equal(el('#campana input[name="zone"][value="Interna"]').checked,true);
+assert.equal(el('#proyectos input[name="zone"][value="Interna"]').checked,true);
 assert.match(el('#brief-termsMode').closest('label').textContent,/Comparte los lineamientos/);
 dom.window.close();
-console.log('PASS: campaign dates, two-service limit, consent, request persistence, design navigation/references, photography guides, prototypes and multiple zones.');
+console.log('PASS: five service cards, supplied logo, campaign dates, two-service limit, consent, request persistence, design navigation/references, photography guides, prototypes and separate projects.');

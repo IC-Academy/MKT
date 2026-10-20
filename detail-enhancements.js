@@ -52,7 +52,7 @@
       ['Idioma del material','Español'],
       ['¿Debe incluir otro logotipo además del de Inter-Con?','No'],
       ['¿Por dónde vas a compartir el material con tu público?','En físico'],
-      ['Comentarios o instrucciones adicionales','Diseño de lectura rápida, con jerarquía visual clara y espacio para señalización de acceso. Información de ejemplo para la demo.']
+      ['Comentarios o instrucciones adicionales','Diseño de lectura rápida, con jerarquía visual clara y espacio para señalización de acceso. Información de referencia.']
     ],
     'MKT-007':[
       ['Área solicitante','Recursos Humanos-Reclutamiento'],
@@ -68,16 +68,16 @@
       ['Idioma del material','Español'],
       ['¿Debe incluir otro logotipo además del de Inter-Con?','No'],
       ['¿Por dónde vas a compartir el material con tu público?','Redes Sociales'],
-      ['Comentarios o instrucciones adicionales','Falta confirmar ubicación y horario de atención; por eso la solicitud permanece rechazada en la demo.']
+      ['Comentarios o instrucciones adicionales','Falta confirmar ubicación y horario de atención; por eso la solicitud permanece rechazada en los datos de referencia.']
     ]
   };
 
   const communicationDemo={
-    'MKT-001':{category:'Institucional',purpose:'Informar',objective:'Dar a conocer la actualización de políticas y su entrada en vigor.',information:'A partir del 12 de octubre de 2026 entra en vigor la actualización de políticas internas. Consulta la versión vigente y dirige tus dudas al área de Calidad. Contenido de ejemplo para esta demo.',language:'Español'},
+    'MKT-001':{category:'Institucional',purpose:'Informar',objective:'Dar a conocer la actualización de políticas y su entrada en vigor.',information:'A partir del 12 de octubre de 2026 entra en vigor la actualización de políticas internas. Consulta la versión vigente y dirige tus dudas al área de Calidad. Contenido de referencia.',language:'Español'},
     'MKT-005':{category:'Cultura / Experiencia',purpose:'Informar',objective:'Dar la bienvenida a las nuevas personas del equipo.',information:'¡Bienvenidos a Inter-Con! Nos alegra contar con ustedes. Conozcan nuestros valores, canales de atención y actividades de integración. El área solicitante validará nombres y fotografías antes de publicar. Contenido de ejemplo.',language:'Español'},
     'MKT-008':{category:'Cultura / Experiencia',purpose:'Lograr asistencia',objective:'Recordar la capacitación general y facilitar la asistencia.',information:'Capacitación general · 16 de octubre de 2026, 10:00 horas, modalidad en línea. Consulta la invitación institucional para acceder. Confirma tu asistencia con Capacitación. Contenido de ejemplo.',language:'Español'}
   };
-  demoDetails['MKT-004']=[['Nombre del reclutador','Solicitante de Reclutamiento'],['Fecha del reporte','12 oct 2026'],['Fecha de campaña solicitada','5 oct 2026'],['Región','Nor Este'],['Ciudad','Monterrey'],['Presupuesto gastado','$1,200 MXN · ejemplo'],['Compilado de conversaciones recibidas','conversaciones-demo.pdf · archivo ilustrativo, sin descarga'],['Evidencia de mensajes con cita a oficinas','citas-demo.pdf · archivo ilustrativo, sin descarga'],['Preguntas posteriores a evidencias','Pendientes de verificar en el formulario original']];
+  demoDetails['MKT-004']=[['Nombre del reclutador','Solicitante de Reclutamiento'],['Fecha del reporte','12 oct 2026'],['Fecha de campaña solicitada','5 oct 2026'],['Región','Nor Este'],['Ciudad','Monterrey'],['Presupuesto gastado','$1,200 MXN · referencia'],['Compilado de conversaciones recibidas','conversaciones-referencia.pdf · archivo ilustrativo, sin descarga'],['Evidencia de mensajes con cita a oficinas','citas-referencia.pdf · archivo ilustrativo, sin descarga'],['Preguntas posteriores a evidencias','Pendientes de verificar en el formulario original']];
   for(const r of [...seed,...requests]){
     if(communicationDemo[r.id])r.communication={generalScope:'Sí',generalImpact:'Sí',company:'Inter-Con Mexico S.A de C.V',area:r.area,title:r.title,date:r.date,audiences:['Toda la empresa'],links:'',otherAudience:'',contactName:r.person,contactEmail:'contacto@example.com',contactPhone:'55 0000 0000',...communicationDemo[r.id]};
     if(demoDetails[r.id]&&!r.answers)r.answers=demoDetails[r.id];
