@@ -67,3 +67,6 @@ input[readonly]{background:#edf2f7;color:var(--blue);font-weight:600}
 @media(max-width:1100px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.brand-logo-crop{width:184px;height:43px}.brand-logo-crop img{transform:translate(-21px,-7px) scale(.8);transform-origin:top left}}
 @media(max-width:560px){.cards{grid-template-columns:1fr}.brand-logo-crop{width:147px;height:35px}.brand-logo-crop img{transform:translate(-17px,-6px) scale(.64);transform-origin:top left}}
+
+/* Límite efectivo de dos servicios en campañas */
+.audience-grid label.selection-limit-reached{opacity:.48;cursor:not-allowed;background:#f1f4f7}.audience-grid label.selection-limit-reached input{cursor:not-allowed}
