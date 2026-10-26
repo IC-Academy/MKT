@@ -26,6 +26,7 @@ jobs:
           node --check campaign-brief.js
           node --check cash-campaign.js
           node --check campaign-effectiveness.js
+          node --check recruitment-budget.js
       - name: Check portal behavior
         run: |
           npm install --prefix "$RUNNER_TEMP/mkt-tests" --no-audit --no-fund jsdom@26.1.0
@@ -35,7 +36,7 @@ jobs:
       - name: Prepare public files
         run: |
           mkdir -p _site
-          cp index.html style.css app.js detail-enhancements.js design-process.js campaign-brief.js cash-campaign.js campaign-effectiveness.js favicon.svg .nojekyll _site/
+          cp index.html style.css app.js detail-enhancements.js design-process.js campaign-brief.js cash-campaign.js campaign-effectiveness.js recruitment-budget.js favicon.svg .nojekyll _site/
           cp -r assets _site/
       - uses: actions/upload-pages-artifact@v3
         with:
