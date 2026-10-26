@@ -22,6 +22,7 @@ assert.ok(cardTitles.some(x=>/Efectividad/i.test(x)),'Effectiveness card missing
 assert.ok(d.querySelector('#cashCampaignForm'),'Cash campaign form missing');
 assert.ok(d.querySelector('#effectForm'),'Effectiveness form missing');
 assert.equal(d.querySelector('#campana-requested'),null,'Manual request date must be removed');
+assert.ok(d.querySelector('#campana-employeeNumber'),'Employee number field required for paid campaigns');
 const selectors=d.querySelectorAll('input[name="clients"]');
 assert.equal(selectors.length,21,'Authorized service list must contain 21 entries');
 assert.ok(d.querySelector('.brand-logo-crop img'),'Corporate marketing logo missing from header');
