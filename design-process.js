@@ -53,6 +53,17 @@
     if(kind==='prototype'){const quantity=form.querySelector('[name="quantity"]'),help=form.querySelector('[data-field="quantity"] .field-help');help.classList.add('important-help');quantity.before(help);}
     function capture(){for(const f of fields){const els=[...form.querySelectorAll('[name="'+f.key+'"]')];data[f.key]=f.type==='checks'?els.filter(e=>e.checked).map(e=>e.value):f.type==='file'?[...els[0].files].map(x=>x.name):els[0].value.trim();}return data;}
     const visible=f=>!f.when||f.when(data);
+    if(kind==='photo'){
+      const photoStep=form.querySelector('[data-process-step="1"]');
+      const booking=document.createElement('div');
+      booking.className='mkt-bookings-panel';
+      booking.innerHTML='<strong>Agenda tu fotografía corporativa con Marketing</strong><p>Consulta los horarios disponibles y confirma tu cita en Microsoft Bookings. Después, registra aquí la fecha y hora de tu reservación.</p><a class="primary mkt-bookings-link" href="https://bookings.cloud.microsoft/book/Fotografacorporativa@icsecurity.com/?ismsaljsauthenabled" target="_blank" rel="noopener noreferrer">Abrir calendario de fotografía corporativa ↗</a><span class="field-help">La reservación se confirma en Microsoft Bookings, no al enviar este formulario.</span>';
+      photoStep.insertBefore(booking,photoStep.querySelector('[data-field="date"]'));
+      const style=document.createElement('style');
+      style.textContent='.mkt-bookings-panel{background:#eef5fc;border:1px solid #cbdced;border-left:4px solid #002a5c;padding:20px;border-radius:12px;margin:8px 0 24px}.mkt-bookings-panel strong{display:block;color:#002a5c;font-size:17px}.mkt-bookings-panel p{margin:8px 0 17px}.mkt-bookings-link{display:inline-flex;text-decoration:none;align-items:center;margin-bottom:12px}.mkt-bookings-panel .field-help{display:block}';
+      document.head.append(style);
+    }
+
     function sync(){capture();if(kind==='photo')renderPhotoGuide(process.querySelector('aside'),data.location);for(const f of fields){const wrap=form.querySelector('[data-field="'+f.key+'"]');wrap.hidden=!visible(f);wrap.querySelectorAll('input,select,textarea').forEach(e=>e.disabled=!visible(f)||Number(wrap.closest('fieldset').dataset.processStep)!==step);}
       if(kind==='prototype'){const holder=form.querySelector('[data-references]');const n=Number(data.quantity),valid=Number.isSafeInteger(n)&&n>0;const desired=valid?n:0;const current=holder.querySelectorAll('[data-reference]');for(let i=current.length;i<desired;i++){const label=document.createElement('label');label.dataset.reference=String(i);label.innerHTML='Referencia del prototipo '+(i+1)+' <span class="optional">Opcional</span><input type="file" name="reference'+i+'" accept="image/jpeg,image/png,image/webp"><span class="field-help">Adjunta una referencia si la tienes. Si no cuentas con ella, puedes continuar y Marketing la solicitará después.</span>';holder.append(label);}for(let i=current.length-1;i>=desired;i--)current[i].remove();holder.querySelectorAll('input').forEach(e=>e.disabled=step!==1);}
     }
