@@ -70,3 +70,12 @@ input[readonly]{background:#edf2f7;color:var(--blue);font-weight:600}
 
 /* Límite efectivo de dos servicios en campañas */
 .audience-grid label.selection-limit-reached{opacity:.48;cursor:not-allowed;background:#f1f4f7}.audience-grid label.selection-limit-reached input{cursor:not-allowed}
+
+/* Proyectos de Marketing: opciones legibles dentro del flujo existente */
+#proyectos .project-options{border:0;padding:0;margin:0 0 18px;display:grid;gap:11px;min-width:0}
+#proyectos .project-options legend{font-weight:700;margin-bottom:10px}
+#proyectos .project-options label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;line-height:1.5}
+#proyectos .project-options input[type="radio"],#proyectos .project-options input[type="checkbox"]{flex:0 0 auto;width:18px;height:18px;margin-top:3px;accent-color:var(--accent,#b51c30)}
+#proyectos .comm-main form [data-project-step][hidden]{display:none}
+#proyectos .native-field textarea{min-height:125px}
+#proyectos .field-help{display:block;margin-top:7px}
