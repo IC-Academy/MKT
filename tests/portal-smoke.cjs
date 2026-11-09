@@ -3,7 +3,7 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const {JSDOM}=require(process.env.MKT_JSDOM||'jsdom');
 const html=fs.readFileSync('index.html','utf8');
-const scripts=['app.js','detail-enhancements.js','design-process.js','campaign-brief.js','cash-campaign.js','campaign-effectiveness.js'];
+const scripts=['app.js','detail-enhancements.js','design-process.js','campaign-brief.js','cash-campaign.js','campaign-effectiveness.js','recruitment-budget.js','role-dashboard.js'];
 for(const file of scripts){assert.ok(fs.existsSync(file),'Missing script: '+file);assert.ok(html.includes(file),'Script missing from index: '+file);}
 assert.ok(fs.existsSync('assets/mkt-logo-source.png'),'Original marketing logo missing');
 const dom=new JSDOM(html,{url:'https://example.test/#solicitar',runScripts:'outside-only',pretendToBeVisual:true});
@@ -26,5 +26,23 @@ assert.ok(d.querySelector('#campana-employeeNumber'),'Employee number field requ
 const selectors=d.querySelectorAll('input[name="clients"]');
 assert.equal(selectors.length,21,'Authorized service list must contain 21 entries');
 assert.ok(d.querySelector('.brand-logo-crop img'),'Corporate marketing logo missing from header');
+// Simulate distinct access profiles without Entra authentication.
+d.querySelector('#accessButton').click();
+for(const id of ['requester-demo','projects-demo','super-demo','nydia','veronica','jessica']){
+  assert.ok(d.querySelector('[data-profile="'+id+'"]'),'Missing simulated login profile '+id);
+}
+d.querySelector('[data-profile="requester-demo"]').click();
+assert.ok(!d.querySelector('#mktRoleDashboard').hidden,'Requester dashboard should be visible');
+assert.match(d.querySelector('#mktRoleDashboard').textContent,/Portal de solicitudes/);
+assert.ok(d.querySelector('#adminNav').hidden,'Requester cannot open administration');
+d.querySelector('#accessButton').click();
+d.querySelector('[data-profile="super-demo"]').click();
+assert.ok(!d.querySelector('#adminNav').hidden,'Super Admin should see administration');
+assert.match(d.querySelector('#mktRoleDashboard').textContent,/Administración general/);
+assert.ok(!d.querySelector('#usuarios').hidden,'Super Admin should land in user administration');
+d.querySelector('#accessButton').click();
+d.querySelector('[data-profile="jessica"]').click();
+assert.match(d.querySelector('#mktRoleDashboard').textContent,/Reclutamiento digital/);
+assert.ok(!d.querySelector('#recruitmentBudget').hidden,'Marketing digital should see budget panel');
 dom.window.close();
-console.log('PASS: portal scripts loaded, three marketing modules available, 21 clients, auto request date, original logo.');
+console.log('PASS: portal modules, 21 clients, login demo (requester / super admin / digital), role dashboards and budget access.');
