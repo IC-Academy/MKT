@@ -41,6 +41,12 @@ assert.ok(html.includes('workspace-shell.css'),'Workspace sidebar styles should 
 // Both home CTAs must open two-stage demo sign-in, never directly enter a role.
 d.querySelector('#goForms').click();
 assert.equal(d.querySelector('#mktLoginOverlay').hidden,false,'Create request must open login');
+d.querySelector('#mktLoginOverlay [data-login-close]').click();
+assert.equal(d.querySelector('#mktLoginOverlay').hidden,true,'Dismiss returns to clean home');
+d.querySelector('.hero-actions [data-view="equipo"]').click();
+assert.equal(d.querySelector('#mktLoginOverlay').hidden,false,'My workspace must also open login');
+d.querySelector('#mktLoginOverlay [data-login-close]').click();
+d.querySelector('#goForms').click();
 assert.equal(d.querySelector('#mktLoginProfileStage').hidden,true,'Profile list follows email entry');
 d.querySelector('#mktLoginMail').value='demo@intercon.com.mx';
 d.querySelector('#mktLoginEmailForm').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
