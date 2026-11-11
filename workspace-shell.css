@@ -12,7 +12,7 @@ body.mkt-shell-active .card{min-height:0}
 #mktSidebar{display:none;position:fixed;inset:0 auto 0 0;width:252px;z-index:300;background:#122a50;color:#d8e9ff;overflow:auto;scrollbar-width:thin;box-shadow:5px 0 20px #0b2b5620;flex-direction:column}
 body.mkt-shell-active #mktSidebar{display:flex}
 .mkt-side-brand{padding:26px 19px 20px;border-bottom:1px solid #ffffff1b;display:flex;flex-direction:column;gap:5px;align-items:flex-start}
-.mkt-side-logo{display:block;max-width:100%;width:183px;height:82px;object-fit:contain;object-position:left center;background:#fff;border-radius:11px;padding:6px;filter:none}
+.mkt-side-logo{display:block;max-width:100%;width:190px;height:80px;object-fit:contain;object-position:left center;background:#fff;border-radius:11px;padding:6px;filter:none}
 .mkt-side-brand-name{color:#afc9e7;font-size:11px;font-weight:800;letter-spacing:1.65px;margin:0 0 3px 3px}
 #mktSideNav{padding:22px 10px;flex:1}
 .mkt-side-section{margin-bottom:24px}
@@ -46,3 +46,25 @@ body.mkt-shell-active .mkt-role-dashboard h2{font-size:22px}
 body.mkt-shell-active .mkt-role-dashboard p{font-size:13px}
 @media(max-width:1000px){body.mkt-shell-active>main{margin-left:226px;padding:0 18px 45px}body.mkt-shell-active>footer{margin-left:226px}#mktSidebar{width:226px}}
 @media(max-width:760px){body.mkt-shell-active>main,body.mkt-shell-active>footer{margin-left:0}body.mkt-shell-active #mktSidebar{transform:translateX(-100%);transition:transform .2s;width:min(290px,84vw)}body.mkt-shell-active.mkt-sidebar-expanded #mktSidebar{transform:translateX(0)}#mktMobileMenu{display:inline-flex;gap:8px;align-items:center;border:1px solid #d1dfed;border-radius:9px;padding:9px;color:#123c6b;font-weight:800}body.mkt-shell-active.mkt-sidebar-expanded #mktShellScrim{display:block;position:fixed;inset:0;border:0;border-radius:0;background:#0b223c99;z-index:250;width:100%;height:100%}body.mkt-shell-active #mktShellTopbar{height:69px}body.mkt-shell-active .workspace-layout{grid-template-columns:minmax(0,1fr)}}
+/* Formularios: navegación compacta, espacio máximo para campos y sin solapamientos */
+body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded)>main{margin-left:76px;padding-left:clamp(12px,1.8vw,30px);padding-right:clamp(12px,1.8vw,30px)}
+body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded)>footer{margin-left:76px}
+body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) #mktSidebar{width:76px;overflow:hidden}
+body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-brand{padding:14px 6px 12px;align-items:center}
+body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-logo{width:62px;height:50px;padding:4px;object-fit:contain}
+body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-brand-name,body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-section>p,body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-section>button>span:not(.mkt-side-icon),body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-bottom{display:none}
+body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) #mktSideNav{padding:18px 5px}
+body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-section>button{justify-content:center;padding:12px 6px;min-height:49px}
+body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-icon{font-size:23px;width:30px}
+body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-section{margin-bottom:10px;padding-bottom:5px;border-bottom:1px solid #ffffff25}
+body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-section>button{position:relative}
+/* Formularios anidados de Marketing: una columna cuando no cabe la ayuda lateral */
+body.mkt-shell-active .comm-layout,body.mkt-shell-active .brief-layout{min-width:0}
+body.mkt-shell-active .comm-main,body.mkt-shell-active .comm-aside{min-width:0;max-width:100%}
+body.mkt-shell-active input,body.mkt-shell-active select,body.mkt-shell-active textarea{max-width:100%;min-width:0}
+body.mkt-shell-active .steps{min-width:0;gap:8px;flex-wrap:wrap}
+body.mkt-shell-active .steps li{min-width:0;flex:1 1 128px}
+body.mkt-shell-active .view{min-width:0}
+body.mkt-shell-active #diseno,body.mkt-shell-active #comunicado,body.mkt-shell-active #proyectos,body.mkt-shell-active #campana,body.mkt-shell-active #reporte{width:100%;max-width:100%}
+@media(max-width:1460px){body.mkt-shell-active .comm-layout{grid-template-columns:minmax(0,1fr)!important}body.mkt-shell-active .comm-aside{margin-top:14px}body.mkt-shell-active .comm-main{width:100%}}
+@media(max-width:760px){body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded)>main,body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded)>footer{margin-left:0}body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) #mktSidebar{width:min(290px,84vw);overflow:auto}body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-brand-name,body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-section>p,body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-section>button>span:not(.mkt-side-icon),body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-bottom{display:initial}body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-section>button{justify-content:flex-start}}
