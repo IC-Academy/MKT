@@ -25,8 +25,9 @@ assert.equal(d.querySelector('#campana-requested'),null,'Manual request date mus
 assert.ok(d.querySelector('#campana-employeeNumber'),'Employee number field required for paid campaigns');
 const selectors=d.querySelectorAll('input[name="clients"]');
 assert.equal(selectors.length,21,'Authorized service list must contain 21 entries');
-assert.ok(d.querySelector('.brand-logo-crop img'),'Corporate marketing logo missing from header');
-assert.ok(d.querySelector('.brand-logo-crop img').getAttribute('src').startsWith('assets/mkt-area-logo.svg'),'Brand must use the supplied logo');
+assert.ok(d.querySelector('.site-header .mkt-corporate-wordmark'),'Corporate Inter-Con brand must remain in header');
+assert.equal(d.querySelector('.site-header .mkt-hero-area-logo'),null,'MKT area logo must not appear in header');
+assert.ok(d.querySelector('.hero-copy .mkt-hero-area-logo img')?.getAttribute('src').startsWith('assets/mkt-area-logo.svg'),'MKT logo must sit above hero title');
 assert.ok(fs.existsSync('assets/mkt-area-logo.svg'),'Actual MKT area logo asset must be available');
 assert.ok(d.querySelector('#commForm [name="category"]').textContent.includes('Salud / NOM-035'),'Comunicado should offer Salud / NOM-035');
 assert.ok(fs.readFileSync('design-process.js','utf8').includes("quantity.max='12'"),'Prototipado must support 1 to 12 applications');
