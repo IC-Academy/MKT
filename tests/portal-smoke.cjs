@@ -5,7 +5,7 @@ const {JSDOM}=require(process.env.MKT_JSDOM||'jsdom');
 const html=fs.readFileSync('index.html','utf8');
 const scripts=['app.js','detail-enhancements.js','design-process.js','campaign-brief.js','cash-campaign.js','campaign-effectiveness.js','recruitment-budget.js','role-dashboard.js','welcome-screen.js','workspace-shell.js'];
 for(const file of scripts){assert.ok(fs.existsSync(file),'Missing script: '+file);assert.ok(html.includes(file),'Script missing from index: '+file);}
-assert.ok(fs.existsSync('assets/mkt-logo-source.png'),'Original marketing logo missing');
+assert.ok(fs.existsSync('assets/mkt-area-logo.svg'),'User-supplied MKT IC logo required');
 const dom=new JSDOM(html,{url:'https://example.test/#solicitar',runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window,d=w.document;
 w.structuredClone=structuredClone;
@@ -31,13 +31,25 @@ assert.ok(fs.existsSync('assets/mkt-area-logo.svg'),'Actual MKT area logo asset 
 assert.ok(d.querySelector('#commForm [name="category"]').textContent.includes('Salud / NOM-035'),'Comunicado should offer Salud / NOM-035');
 assert.ok(fs.readFileSync('design-process.js','utf8').includes("quantity.max='12'"),'Prototipado must support 1 to 12 applications');
 assert.ok(html.includes('welcome-screen.css'),'Welcome styles must be published');
-assert.ok(d.querySelector('#mktWelcome'),'Welcome entry view must exist');
+assert.ok(d.querySelector('#mktLoginOverlay'),'Access login dialog should exist');
+assert.ok(d.querySelector('#mktLoginOverlay').hidden,'Login should be closed on initial landing');
+assert.ok(d.querySelector('#goForms'),'Landing CTA should exist');
+assert.ok(d.querySelector('.hero-actions [data-view="equipo"]'),'Workspace CTA should exist');
 assert.ok(d.querySelector('#mktSidebar'),'Workspace navigation sidebar should be present');
 assert.equal(d.querySelector('.mkt-side-logo').getAttribute('src'),'assets/mkt-area-logo.svg','Sidebar must use actual MKT logo');
 assert.ok(html.includes('workspace-shell.css'),'Workspace sidebar styles should be included');
-assert.match(d.querySelector('#mktWelcome').textContent,/De una idea/);
-assert.ok(d.body.classList.contains('mkt-welcome-open'),'Welcome must open on first visit');
-// Simulate distinct access profiles without Entra authentication.
+// Both home CTAs must open two-stage demo sign-in, never directly enter a role.
+d.querySelector('#goForms').click();
+assert.equal(d.querySelector('#mktLoginOverlay').hidden,false,'Create request must open login');
+assert.equal(d.querySelector('#mktLoginProfileStage').hidden,true,'Profile list follows email entry');
+d.querySelector('#mktLoginMail').value='demo@intercon.com.mx';
+d.querySelector('#mktLoginEmailForm').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+assert.equal(d.querySelector('#mktLoginProfileStage').hidden,false,'Sign-in should reveal demo profile choices');
+assert.ok(d.querySelectorAll('[data-mkt-login-profile]').length>=6,'Demo must present all main roles');
+d.querySelector('[data-mkt-login-profile="requester-demo"]').click();
+assert.equal(d.querySelector('#mktLoginOverlay').hidden,true,'Profile selection closes login');
+assert.equal(d.body.dataset.view,'solicitar','Create request opens form selection after profile');
+assert.ok(d.body.classList.contains('mkt-shell-active'),'Sidebar active after demo profile');
 d.querySelector('#accessButton').click();
 for(const id of ['requester-demo','projects-demo','super-demo','nydia','veronica','jessica']){
   assert.ok(d.querySelector('[data-profile="'+id+'"]'),'Missing simulated login profile '+id);
@@ -58,8 +70,8 @@ d.querySelector('[data-profile="jessica"]').click();
 assert.match(d.querySelector('#mktRoleDashboard').textContent,/Reclutamiento digital/);
 assert.ok(!d.querySelector('#recruitmentBudget').hidden,'Marketing digital should see budget panel');
 assert.match(d.querySelector('#mktSideNav').textContent,/Presupuestos regionales/,'Digital sidebar must show budgets');
-d.querySelector('[data-welcome-profile="veronica"]').click();
-assert.ok(d.querySelector('#mktWelcome').hidden,'Welcome must close after profile selection');
+d.querySelector('#accessButton').click();
+d.querySelector('[data-profile="veronica"]').click();
 assert.match(d.querySelector('#mktRoleDashboard').textContent,/Estudio de diseño/);
 dom.window.close();
-console.log('PASS: portal modules, 21 clients, login demo (requester / super admin / digital), role dashboards and budget access.');
+console.log('PASS: MKT logo, clean landing, two-stage sign-in, all role choices, 21 clients and role dashboards.');
