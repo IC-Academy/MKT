@@ -3,7 +3,7 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const {JSDOM}=require(process.env.MKT_JSDOM||'jsdom');
 const html=fs.readFileSync('index.html','utf8');
-const scripts=['app.js','detail-enhancements.js','design-process.js','campaign-brief.js','cash-campaign.js','campaign-effectiveness.js','recruitment-budget.js','role-dashboard.js','welcome-screen.js'];
+const scripts=['app.js','detail-enhancements.js','design-process.js','campaign-brief.js','cash-campaign.js','campaign-effectiveness.js','recruitment-budget.js','role-dashboard.js','welcome-screen.js','workspace-shell.js'];
 for(const file of scripts){assert.ok(fs.existsSync(file),'Missing script: '+file);assert.ok(html.includes(file),'Script missing from index: '+file);}
 assert.ok(fs.existsSync('assets/mkt-logo-source.png'),'Original marketing logo missing');
 const dom=new JSDOM(html,{url:'https://example.test/#solicitar',runScripts:'outside-only',pretendToBeVisual:true});
@@ -28,6 +28,8 @@ assert.equal(selectors.length,21,'Authorized service list must contain 21 entrie
 assert.ok(d.querySelector('.brand-logo-crop img'),'Corporate marketing logo missing from header');
 assert.ok(html.includes('welcome-screen.css'),'Welcome styles must be published');
 assert.ok(d.querySelector('#mktWelcome'),'Welcome entry view must exist');
+assert.ok(d.querySelector('#mktSidebar'),'Workspace navigation sidebar should be present');
+assert.ok(html.includes('workspace-shell.css'),'Workspace sidebar styles should be included');
 assert.match(d.querySelector('#mktWelcome').textContent,/De una idea/);
 assert.ok(d.body.classList.contains('mkt-welcome-open'),'Welcome must open on first visit');
 // Simulate distinct access profiles without Entra authentication.
@@ -42,12 +44,15 @@ assert.ok(d.querySelector('#adminNav').hidden,'Requester cannot open administrat
 d.querySelector('#accessButton').click();
 d.querySelector('[data-profile="super-demo"]').click();
 assert.ok(!d.querySelector('#adminNav').hidden,'Super Admin should see administration');
+assert.ok(d.body.classList.contains('mkt-shell-active'),'Authenticated demo profile must open structured workspace');
+assert.match(d.querySelector('#mktSideNav').textContent,/Usuarios y perfiles/,'Admin sidebar must show user management');
 assert.match(d.querySelector('#mktRoleDashboard').textContent,/Administración general/);
 assert.ok(!d.querySelector('#usuarios').hidden,'Super Admin should land in user administration');
 d.querySelector('#accessButton').click();
 d.querySelector('[data-profile="jessica"]').click();
 assert.match(d.querySelector('#mktRoleDashboard').textContent,/Reclutamiento digital/);
 assert.ok(!d.querySelector('#recruitmentBudget').hidden,'Marketing digital should see budget panel');
+assert.match(d.querySelector('#mktSideNav').textContent,/Presupuestos regionales/,'Digital sidebar must show budgets');
 d.querySelector('[data-welcome-profile="veronica"]').click();
 assert.ok(d.querySelector('#mktWelcome').hidden,'Welcome must close after profile selection');
 assert.match(d.querySelector('#mktRoleDashboard').textContent,/Estudio de diseño/);
