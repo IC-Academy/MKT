@@ -50,3 +50,13 @@ body.mkt-login-active{overflow:hidden}
 .mkt-login-chevron{font-size:20px;color:#5e88b1}
 @media(max-width:720px){body:not(.mkt-shell-active) #solicitar>.hero{display:flex;flex-direction:column;min-height:calc(100dvh - 90px);justify-content:center;gap:18px}body:not(.mkt-shell-active) .hero-copy h1{font-size:clamp(40px,9vw,62px)}body:not(.mkt-shell-active) .creative-board{min-height:260px;width:100%}#mktLoginOverlay{padding:12px}.mkt-login-window{padding-top:22px}}
 @media(max-height:700px){body:not(.mkt-shell-active) #solicitar>.hero{min-height:auto}}
+
+/* Branding aprobado en revisión MKT: Inter-Con corporativo arriba y MKT abajo. */
+body:not(.mkt-shell-active) .site-header{height:132px!important;min-height:132px;display:flex!important;align-items:center!important;padding:9px clamp(22px,3vw,50px)!important}
+body:not(.mkt-shell-active) .mkt-brand-stack{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:4px!important;max-width:240px;text-decoration:none!important;line-height:1!important}
+body:not(.mkt-shell-active) .mkt-corporate-wordmark{display:flex!important;align-items:center!important;margin:0!important;padding:0!important;font-size:clamp(20px,2vw,26px)!important;letter-spacing:1.2px!important;font-weight:900!important;color:#072b58!important;line-height:1.1!important;white-space:nowrap}
+body:not(.mkt-shell-active) .mkt-corporate-rule{height:3px!important;width:26px!important;background:#389a84!important;display:inline-block!important;margin:0 0 0 9px!important;border-radius:3px!important}
+body:not(.mkt-shell-active) .mkt-brand-stack .brand-logo-crop{width:170px!important;height:63px!important;margin:0!important;padding:0!important;display:block!important;overflow:visible!important}
+body:not(.mkt-shell-active) .mkt-brand-stack .brand-logo-crop img{display:block!important;width:170px!important;height:63px!important;object-fit:contain!important;max-width:100%!important;transform:none!important}
+body:not(.mkt-shell-active) #solicitar>.hero{min-height:calc(100dvh - 132px)!important}
+@media(max-width:720px){body:not(.mkt-shell-active) .site-header{height:119px!important;min-height:119px}body:not(.mkt-shell-active) #solicitar>.hero{min-height:calc(100dvh - 119px)!important}}
