@@ -14,7 +14,7 @@
   splash.setAttribute('aria-label','Bienvenida al Portal MKT');
   splash.innerHTML=`<div class="mkt-welcome-art">
      <div class="mkt-welcome-art-inner">
-       <div class="mkt-welcome-brand"><span class="mkt-welcome-brand-symbol">IC<span class="mkt-welcome-brand-dot">●</span></span><div><strong>INTER-CON</strong><small>PORTAL DE MARKETING</small></div></div>
+       <div class="mkt-welcome-brand"><img class="mkt-welcome-actual-logo" src="assets/mkt-logo-source.png" alt="Marketing Inter-Con"><div><strong>INTER-CON</strong><small>PORTAL DE MARKETING</small></div></div>
        <div class="mkt-welcome-copy">
          <p class="mkt-welcome-overline">PLATAFORMA DE SERVICIOS DE MARKETING</p>
          <h1>De una idea<br>a una solicitud.<br><em>Todo conectado.</em></h1>
