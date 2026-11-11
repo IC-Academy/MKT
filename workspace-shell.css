@@ -1,0 +1,48 @@
+/* Sidebar institucional por rol | proyecto MKT */
+body.mkt-shell-active{background:#f3f6fb}
+body.mkt-shell-active>.site-header{display:none}
+body.mkt-shell-active>main{max-width:none;margin:0 0 0 252px;padding:0 26px 55px;min-height:100vh}
+body.mkt-shell-active>footer{margin-left:252px}
+body.mkt-shell-active .view{max-width:1510px;margin:0 auto}
+body.mkt-shell-active #solicitar>.hero{display:none}
+body.mkt-shell-active #solicitar .section-intro{padding-top:32px}
+body.mkt-shell-active .intro,body.mkt-shell-active .section-head{margin-top:24px}
+body.mkt-shell-active .cards{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+body.mkt-shell-active .card{min-height:0}
+#mktSidebar{display:none;position:fixed;inset:0 auto 0 0;width:252px;z-index:300;background:#122a50;color:#d8e9ff;overflow:auto;scrollbar-width:thin;box-shadow:5px 0 20px #0b2b5620;flex-direction:column}
+body.mkt-shell-active #mktSidebar{display:flex}
+.mkt-side-brand{padding:26px 19px 20px;border-bottom:1px solid #ffffff1b;display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+.mkt-side-logo{display:block;max-width:100%;width:183px;height:82px;object-fit:contain;object-position:left center;filter:brightness(0) invert(1)}
+.mkt-side-brand-name{color:#afc9e7;font-size:11px;font-weight:800;letter-spacing:1.65px;margin:0 0 3px 3px}
+#mktSideNav{padding:22px 10px;flex:1}
+.mkt-side-section{margin-bottom:24px}
+.mkt-side-section>p{margin:0 10px 12px;color:#8daaca;font-weight:800;font-size:10px;letter-spacing:1.65px}
+.mkt-side-section>button{width:100%;display:flex;gap:12px;align-items:center;color:#d6e6fc;border:0;border-left:3px solid transparent;border-radius:9px;text-align:left;background:transparent;padding:12px 11px;font-size:13px;font-weight:700;margin-bottom:4px}
+.mkt-side-section>button:hover{background:#ffffff12;color:#fff}
+.mkt-side-section>button.is-active{color:#fff;border-left-color:#74c0ea;background:#ffffff24}
+.mkt-side-icon{font-size:19px;display:inline-flex;justify-content:center;align-items:center;width:24px;flex:none;font-weight:400}
+.mkt-side-bottom{margin-top:auto;border-top:1px solid #ffffff24;padding:19px 15px 17px}
+#mktSideProfile{display:flex;align-items:center;gap:11px;margin-bottom:15px}
+#mktSideProfile>span:last-child{min-width:0}
+#mktSideProfile strong{display:block;color:#fff;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#mktSideProfile small{display:block;color:#9ebcdb;font-size:10px;letter-spacing:.6px;margin-top:4px}
+.mkt-side-avatar{background:#3b6ca4;color:#fff;border-radius:12px;display:grid;place-items:center;font-weight:800;width:40px;height:40px;flex:none}
+#mktSideSwitch,#mktSideExit{display:block;width:100%;border:0;background:transparent;color:#cce1fa;text-align:left;font-size:12px;padding:9px 11px;border-radius:8px}
+#mktSideSwitch:hover,#mktSideExit:hover{background:#ffffff16}
+.mkt-side-demo{margin-top:15px;color:#a8c9ee;font-size:10px;letter-spacing:.6px;padding:9px;border:1px solid #ffffff25;border-radius:8px}
+#mktShellTopbar{display:none}
+body.mkt-shell-active #mktShellTopbar{display:flex;align-items:center;justify-content:space-between;gap:18px;height:78px;border-bottom:1px solid #dae4ee;padding:0 5px}
+.mkt-shell-heading{display:flex;flex-direction:column;gap:4px;flex:1}
+.mkt-shell-heading strong{font-size:19px;color:#122b52}
+.mkt-shell-heading small{font-size:10px;letter-spacing:1.7px;color:#7890ac}
+.mkt-shell-demo{background:#e7f2ff;color:#245b92;border-radius:30px;padding:7px 13px;font-size:10px;font-weight:800;letter-spacing:.8px}
+#mktMobileMenu{display:none}
+#mktShellScrim{display:none}
+body.mkt-shell-active .mkt-role-dashboard{margin:16px 0 26px}
+body.mkt-shell-active .workspace-top{padding-top:22px}
+body.mkt-shell-active .workspace-top h1{font-size:clamp(25px,2.5vw,36px)}
+body.mkt-shell-active .mkt-role-dashboard-main{padding:18px 25px}
+body.mkt-shell-active .mkt-role-dashboard h2{font-size:22px}
+body.mkt-shell-active .mkt-role-dashboard p{font-size:13px}
+@media(max-width:1000px){body.mkt-shell-active>main{margin-left:226px;padding:0 18px 45px}body.mkt-shell-active>footer{margin-left:226px}#mktSidebar{width:226px}}
+@media(max-width:760px){body.mkt-shell-active>main,body.mkt-shell-active>footer{margin-left:0}body.mkt-shell-active #mktSidebar{transform:translateX(-100%);transition:transform .2s;width:min(290px,84vw)}body.mkt-shell-active.mkt-sidebar-expanded #mktSidebar{transform:translateX(0)}#mktMobileMenu{display:inline-flex;gap:8px;align-items:center;border:1px solid #d1dfed;border-radius:9px;padding:9px;color:#123c6b;font-weight:800}body.mkt-shell-active.mkt-sidebar-expanded #mktShellScrim{display:block;position:fixed;inset:0;border:0;border-radius:0;background:#0b223c99;z-index:250;width:100%;height:100%}body.mkt-shell-active #mktShellTopbar{height:69px}body.mkt-shell-active .workspace-layout{grid-template-columns:minmax(0,1fr)}}
