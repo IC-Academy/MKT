@@ -12,7 +12,7 @@
     'Super Admin':[{section:'DIRECCIÓN DEL PORTAL',items:[['⌂','Resumen general','equipo'],['▤','Todas las solicitudes','equipo','inbox'],['◈','Campañas y presupuesto','equipo','recruitmentBudget'],['▦','Calendario','calendario']]},{section:'ADMINISTRACIÓN',items:[['♙','Usuarios y perfiles','usuarios'],['✎','Formularios','solicitar']]}]
   };
   const root=document.createElement('aside');root.id='mktSidebar';root.setAttribute('aria-label','Módulos del portal');
-  root.innerHTML='<div class="mkt-side-brand"><img src="assets/mkt-logo-source.png" alt="Marketing Inter-Con" class="mkt-side-logo"><span class="mkt-side-brand-name">PORTAL DE MARKETING</span></div><div id="mktSideNav"></div><div class="mkt-side-bottom"><div id="mktSideProfile"></div><button id="mktSideSwitch" type="button">⇄ Cambiar perfil</button><button id="mktSideExit" type="button">↪ Cerrar sesión</button><div class="mkt-side-demo">● ENTORNO DE DEMOSTRACIÓN</div></div>';
+  root.innerHTML='<div class="mkt-side-brand"><img src="assets/mkt-area-logo.svg" alt="Marketing Inter-Con" class="mkt-side-logo"><span class="mkt-side-brand-name">PORTAL DE MARKETING</span></div><div id="mktSideNav"></div><div class="mkt-side-bottom"><div id="mktSideProfile"></div><button id="mktSideSwitch" type="button">⇄ Cambiar perfil</button><button id="mktSideExit" type="button">↪ Cerrar sesión</button><div class="mkt-side-demo">● ENTORNO DE DEMOSTRACIÓN</div></div>';
   document.body.prepend(root);
   const topbar=document.createElement('div');topbar.id='mktShellTopbar';topbar.innerHTML='<button type="button" id="mktMobileMenu" aria-expanded="false" aria-controls="mktSidebar">☰ <span>Menú</span></button><div class="mkt-shell-heading"><strong id="mktShellTitle">Mi espacio</strong><small>INTER-CON · MARKETING</small></div><span class="mkt-shell-demo">MODO DEMO</span>';
   document.querySelector('main')?.prepend(topbar);
@@ -30,6 +30,7 @@
     const u=typeof currentUser==='function'?currentUser():null;
     if(!u){document.body.classList.remove('mkt-shell-active','mkt-sidebar-expanded');return;}
     document.body.classList.add('mkt-shell-active');
+    document.body.classList.toggle('mkt-form-focused',['diseno','comunicado','campana','reporte','proyectos'].includes(currentView()));
     const sections=roleMap[u.role]||roleMap.Solicitante;
     $('#mktSideNav').innerHTML=sections.map(group=>'<div class="mkt-side-section"><p>'+escaped(group.section)+'</p>'+group.items.map(([icon,label,target,anchor])=>'<button type="button" data-side-route="'+escaped(target)+'" '+(anchor?'data-side-anchor="'+escaped(anchor)+'" ':'')+'class="'+(currentView()===target&&!anchor?'is-active':'')+'"><span class="mkt-side-icon" aria-hidden="true">'+escaped(icon)+'</span><span>'+escaped(label)+'</span></button>').join('')+'</div>').join('');
     $('#mktSideProfile').innerHTML='<span class="mkt-side-avatar">'+escaped(u.name.split(' ').map(s=>s.charAt(0)).slice(0,2).join('').toUpperCase())+'</span><span><strong>'+escaped(u.name)+'</strong><small>'+escaped(compactRole[u.role]||u.role)+'</small></span>';
