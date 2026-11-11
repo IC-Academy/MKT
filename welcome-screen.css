@@ -53,3 +53,4 @@ body.mkt-welcome-open>.site-header,body.mkt-welcome-open>main,body.mkt-welcome-o
 @media(max-width:440px){.mkt-welcome-scenarios{grid-template-columns:1fr}.mkt-welcome-login h2{font-size:34px}.mkt-welcome-overline{margin-bottom:22px}}
 
 .mkt-welcome-actual-logo{display:block;box-sizing:border-box;width:112px;height:65px;object-fit:contain;background:#fff;border-radius:11px;padding:6px;flex:none}
+.mkt-welcome-actual-logo{width:154px;height:78px;object-fit:contain;background:white;padding:6px;border-radius:12px}
