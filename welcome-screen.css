@@ -89,3 +89,8 @@ body.mkt-shell-active #solicitar>.hero{display:none!important}
   }
   .mkt-hero-area-logo{width:145px;margin-bottom:14px}
 }
+
+/* Logotipo corporativo oficial en header; identidad MKT permanece en el hero. */
+body:not(.mkt-shell-active) .mkt-corporate-brand{display:flex!important;align-items:center!important;justify-content:flex-start!important;max-width:min(44vw,340px)!important;width:auto!important;min-width:0!important}
+body:not(.mkt-shell-active) .mkt-corporate-logo{display:block!important;width:clamp(205px,24vw,315px)!important;height:auto!important;max-height:70px!important;object-fit:contain!important;object-position:left center!important}
+@media(max-width:720px){body:not(.mkt-shell-active) .mkt-corporate-brand{max-width:80vw!important}body:not(.mkt-shell-active) .mkt-corporate-logo{width:clamp(190px,51vw,270px)!important;max-height:58px!important}}
