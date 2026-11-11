@@ -56,6 +56,18 @@ render();view(location.hash.slice(1)||'solicitar');window.addEventListener('hash
 
 const commAreas=['Atención a personal','ABM','Bienestar','Brigadas','Capacitación Operativa','Calidad','Compras','Control Gubernamental','Desarrollo de negocios','Finanzas','IT','Juridico','Logística','MKT','NOM-035','Nóminas e IMSS','Operaciones','Reclutamiento','Tesorería','Ventas','Seguridad e Higiene','Relaciones Laborales','Salud','RHH','Dirección general'];
 $('#commArea').innerHTML+=commAreas.map(a=>'<option>'+esc(a)+'</option>').join('');
+const commDescriptions={
+ Institucional:'Cambios importantes, políticas, comunicados de Dirección y anuncios institucionales.',
+ Operativo:'Remodelaciones, accesos, mantenimiento y actualizaciones de procesos.',
+ 'Cultura / Experiencia':'Eventos, actividades internas, reconocimientos y experiencia del colaborador.',
+ 'Salud / NOM-035':'Campañas de salud, vacunación, prevención y bienestar psicológico, incluida la NOM-035.',
+ Urgente:'Avisos prioritarios que requieren difusión inmediata o acciones en un plazo muy corto.'
+};
+function syncCommCategory(){const sel=document.querySelector('#commForm [name="category"]');const box=document.querySelector('#commCategoryInfo');if(box&&sel)box.textContent=commDescriptions[sel.value]||'Selecciona una categoría para conocer qué mensajes corresponden.';}
+document.querySelector('#commForm [name="category"]')?.addEventListener('change',syncCommCategory);
+const companyFields=document.querySelectorAll('#commForm [name="company"]');
+companyFields.forEach(input=>input.addEventListener('change',()=>{const sel=document.querySelector('#commArea');if(!sel)return;if(input.checked&&input.value==='Externos'){if(![...sel.options].some(o=>o.value==='Externos'))sel.add(new Option('Externos','Externos'));sel.value='Externos';}else if(sel.value==='Externos'){sel.value='';}}));
+
 let commStep=0;
 const commFields=()=>new FormData($('#commForm'));
 function communicationPairs(c){return [['Alcance general',c.generalScope||'Sí'],['Interés o impacto general',c.generalImpact||'Sí'],['Categoría',c.category||'Sin clasificar'],['Propósito',c.purpose||'Sin especificar'],['Compañía',c.company],['Área',c.area],['Objetivo',c.objective],['Destinatarios',(c.audiences||[]).join(', ')+(c.otherAudience?' · '+c.otherAudience:'')],['Idioma / opción original',c.language],['Información',c.information],['Liga / URL',c.links||'Sin enlace'],['Contacto',c.contactName],['Correo electrónico',c.contactEmail],['Teléfono',c.contactPhone]];}
