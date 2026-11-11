@@ -3,7 +3,7 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const {JSDOM}=require(process.env.MKT_JSDOM||'jsdom');
 const html=fs.readFileSync('index.html','utf8');
-const scripts=['app.js','detail-enhancements.js','design-process.js','campaign-brief.js','cash-campaign.js','campaign-effectiveness.js','recruitment-budget.js','role-dashboard.js'];
+const scripts=['app.js','detail-enhancements.js','design-process.js','campaign-brief.js','cash-campaign.js','campaign-effectiveness.js','recruitment-budget.js','role-dashboard.js','welcome-screen.js'];
 for(const file of scripts){assert.ok(fs.existsSync(file),'Missing script: '+file);assert.ok(html.includes(file),'Script missing from index: '+file);}
 assert.ok(fs.existsSync('assets/mkt-logo-source.png'),'Original marketing logo missing');
 const dom=new JSDOM(html,{url:'https://example.test/#solicitar',runScripts:'outside-only',pretendToBeVisual:true});
@@ -26,6 +26,10 @@ assert.ok(d.querySelector('#campana-employeeNumber'),'Employee number field requ
 const selectors=d.querySelectorAll('input[name="clients"]');
 assert.equal(selectors.length,21,'Authorized service list must contain 21 entries');
 assert.ok(d.querySelector('.brand-logo-crop img'),'Corporate marketing logo missing from header');
+assert.ok(html.includes('welcome-screen.css'),'Welcome styles must be published');
+assert.ok(d.querySelector('#mktWelcome'),'Welcome entry view must exist');
+assert.match(d.querySelector('#mktWelcome').textContent,/De una idea/);
+assert.ok(d.body.classList.contains('mkt-welcome-open'),'Welcome must open on first visit');
 // Simulate distinct access profiles without Entra authentication.
 d.querySelector('#accessButton').click();
 for(const id of ['requester-demo','projects-demo','super-demo','nydia','veronica','jessica']){
@@ -44,5 +48,8 @@ d.querySelector('#accessButton').click();
 d.querySelector('[data-profile="jessica"]').click();
 assert.match(d.querySelector('#mktRoleDashboard').textContent,/Reclutamiento digital/);
 assert.ok(!d.querySelector('#recruitmentBudget').hidden,'Marketing digital should see budget panel');
+d.querySelector('[data-welcome-profile="veronica"]').click();
+assert.ok(d.querySelector('#mktWelcome').hidden,'Welcome must close after profile selection');
+assert.match(d.querySelector('#mktRoleDashboard').textContent,/Estudio de diseño/);
 dom.window.close();
 console.log('PASS: portal modules, 21 clients, login demo (requester / super admin / digital), role dashboards and budget access.');
