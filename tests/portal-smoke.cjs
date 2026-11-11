@@ -25,7 +25,7 @@ assert.equal(d.querySelector('#campana-requested'),null,'Manual request date mus
 assert.ok(d.querySelector('#campana-employeeNumber'),'Employee number field required for paid campaigns');
 const selectors=d.querySelectorAll('input[name="clients"]');
 assert.equal(selectors.length,21,'Authorized service list must contain 21 entries');
-assert.ok(d.querySelector('.site-header .mkt-corporate-logo')?.getAttribute('src').startsWith('assets/intercon-corporate-logo.svg'),'Official Inter-Con logo must appear in header');
+assert.ok(d.querySelector('.site-header .mkt-corporate-logo')?.getAttribute('src').startsWith('assets/intercon-corporate-original.png'),'Official Inter-Con logo must appear in header');
 assert.equal(d.querySelector('.site-header .mkt-hero-area-logo'),null,'MKT area logo must not appear in header');
 assert.ok(d.querySelector('.hero-copy .mkt-hero-area-logo img')?.getAttribute('src').startsWith('assets/mkt-area-logo.svg'),'MKT logo must sit above hero title');
 assert.ok(fs.existsSync('assets/mkt-area-logo.svg'),'Actual MKT area logo asset must be available');
