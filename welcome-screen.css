@@ -1,0 +1,53 @@
+/* Corporate welcome | simulated access only */
+body.mkt-welcome-open{overflow:hidden}
+body.mkt-welcome-open>.site-header,body.mkt-welcome-open>main,body.mkt-welcome-open>footer,body.mkt-welcome-open>.mkt-demo-marker{visibility:hidden}
+#mktWelcome{position:fixed;inset:0;z-index:9998;display:grid;grid-template-columns:52.5% 47.5%;background:white;overflow-y:auto;font-family:Arial,Helvetica,sans-serif;color:#0c2a51}
+#mktWelcome[hidden]{display:none!important}
+.mkt-welcome-art{background:radial-gradient(circle at 108% 4%,rgba(79,136,199,.16) 0 36%,transparent 36.2%),radial-gradient(circle at 105% 15%,transparent 0 50%,rgba(90,149,215,.13) 50.2% 66%,transparent 66.2%),linear-gradient(145deg,#112b53,#254879 70%,#122b52);position:relative;color:#fff;min-height:100vh;overflow:hidden}
+.mkt-welcome-art:after{content:"";position:absolute;width:670px;height:670px;border:1px solid rgba(182,216,255,.13);border-radius:50%;right:-265px;top:-200px;pointer-events:none}
+.mkt-welcome-art-inner{min-height:100vh;display:flex;flex-direction:column;position:relative;z-index:1;padding:clamp(24px,3vw,52px) clamp(28px,4vw,68px) 32px}
+.mkt-welcome-brand{display:flex;align-items:center;gap:15px;letter-spacing:1.3px}
+.mkt-welcome-brand-symbol{width:55px;height:55px;background:#ffffff1b;border:1px solid #a3bed84e;border-radius:13px;display:grid;place-items:center;font-weight:900;font-size:23px;letter-spacing:-1px;position:relative}
+.mkt-welcome-brand-dot{color:#a9def7;font-size:9px;position:absolute;right:8px;top:21px}
+.mkt-welcome-brand strong{font-size:18px;display:block;letter-spacing:1.6px}
+.mkt-welcome-brand small{font-size:11px;display:block;letter-spacing:2.5px;color:#b9d8fa;margin-top:5px}
+.mkt-welcome-copy{margin:auto 0;padding:30px 0 20px;max-width:730px}
+.mkt-welcome-overline{font-size:12px;font-weight:800;letter-spacing:2px;border-left:3px solid #8bc4fe;padding-left:13px;color:#aed3ff;margin-bottom:35px}
+.mkt-welcome-copy h1{font-size:clamp(45px,4.1vw,76px);line-height:1.12;letter-spacing:-2.5px;margin:0 0 26px;color:white;font-weight:800}
+.mkt-welcome-copy h1 em{font-style:normal;color:#9acbf5}
+.mkt-welcome-intro{font-size:clamp(15px,1.15vw,19px);line-height:1.8;color:#e1eaff;max-width:610px;margin-bottom:50px}
+.mkt-welcome-benefits{display:grid;gap:14px}
+.mkt-welcome-benefits span{font-size:15px;color:#eaf3ff;display:flex;gap:15px;align-items:center}
+.mkt-welcome-benefits b{display:grid;place-items:center;border:1px solid #799ec766;background:#244a7a88;color:#a7d2ff;border-radius:10px;width:36px;height:34px;font-size:12px;font-weight:500}
+.mkt-welcome-art-footer{border-top:1px solid #a9c3df4f;padding-top:20px;display:flex;justify-content:space-between;gap:15px;font-size:11px;letter-spacing:1.5px;color:#b6d4f5}
+.mkt-welcome-login{display:flex;align-items:center;justify-content:center;background:#fff;min-height:100vh;padding:45px clamp(28px,5vw,78px)}
+.mkt-welcome-login-inner{width:100%;max-width:565px}
+.mkt-welcome-kicker{font-size:12px;color:#24629f;font-weight:800;letter-spacing:2px;margin-bottom:17px}
+.mkt-welcome-login h2{font-size:clamp(32px,2.4vw,44px);letter-spacing:-1.5px;line-height:1.12;margin:0 0 22px;color:#102e56}
+.mkt-welcome-description{font-size:16px;color:#67809b;line-height:1.7;margin-bottom:30px}
+#mktWelcomeForm label{display:block;color:#16375d;font-size:13px;font-weight:800;margin-bottom:10px}
+.mkt-welcome-input{display:flex;align-items:center;gap:13px;border:1px solid #cbd8e7;border-radius:12px;height:58px;padding:0 18px;color:#7398bf}
+.mkt-welcome-input:focus-within{outline:2px solid #8bb9e8;outline-offset:2px}
+.mkt-welcome-input input{border:0!important;outline:0!important;box-shadow:none!important;background:transparent;flex:1;min-width:0;font-size:15px;color:#17395e;padding:0}
+.mkt-welcome-continue{width:100%;min-height:56px;background:#255389;color:white;font-weight:800;display:flex;align-items:center;justify-content:space-between;border:0;border-radius:12px;margin-top:16px;padding:0 22px;box-shadow:0 10px 23px #16437129}
+.mkt-welcome-continue:hover{background:#123e73}
+.mkt-welcome-hint{font-size:11px;color:#7b8ea3;margin:10px 0 0;line-height:1.5}
+.mkt-welcome-divider{margin:32px 0 17px;display:flex;align-items:center;gap:14px;color:#8b9fba;letter-spacing:1.6px;text-align:center;font-size:10px;font-weight:800}
+.mkt-welcome-divider:before,.mkt-welcome-divider:after{content:"";height:1px;flex:1;background:#dce5ef}
+.mkt-welcome-scenarios{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mkt-welcome-scenarios button{display:flex;align-items:center;gap:11px;text-align:left;padding:12px;border:1px solid #dce5ef;border-radius:12px;background:#fff;min-width:0;min-height:62px}
+.mkt-welcome-scenarios button:hover,.mkt-welcome-scenarios button:focus-visible{background:#eff6ff;border-color:#a7c2e5}
+.mkt-welcome-initials{width:37px;height:37px;border-radius:10px;background:#e7f1fb;color:#135089;display:grid;place-items:center;flex:none;font-size:12px;font-weight:800}
+.mkt-welcome-scenarios button>span:nth-child(2){min-width:0;flex:1}
+.mkt-welcome-scenarios strong{font-size:12px;display:block;color:#163354;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mkt-welcome-scenarios small{display:block;font-size:10px;color:#7795b2;line-height:1.5}
+.mkt-welcome-arrow{color:#7b9bbb;font-size:15px}
+.mkt-welcome-other{display:block;border:0;background:none;color:#28598d;padding:12px 0;font-size:12px}
+.mkt-welcome-other:hover{background:none;text-decoration:underline}
+.mkt-welcome-demo-info{background:#f0f6fc;border:1px solid #d7e6f7;border-radius:13px;padding:15px 18px;margin-top:8px}
+.mkt-welcome-demo-info strong{display:block;color:#184d86;font-size:12px;letter-spacing:.4px}
+.mkt-welcome-demo-info p{color:#5d7897;font-size:12px;line-height:1.6;margin:6px 0 0}
+.mkt-welcome-bottom{text-align:center;margin-top:22px;font-size:11px;color:#91a5be}
+@media(max-width:1050px){#mktWelcome{grid-template-columns:48% 52%}.mkt-welcome-art-inner{padding:28px}.mkt-welcome-login{padding:28px}.mkt-welcome-copy h1{font-size:clamp(36px,4.7vw,58px)}}
+@media(max-width:720px){body.mkt-welcome-open{overflow:auto}#mktWelcome{position:fixed;display:block;overflow-y:auto}.mkt-welcome-art{min-height:auto}.mkt-welcome-art-inner{min-height:unset;padding:24px}.mkt-welcome-copy{padding:38px 0 25px;margin:0}.mkt-welcome-copy h1{font-size:clamp(37px,8vw,51px)}.mkt-welcome-intro{margin-bottom:26px}.mkt-welcome-art-footer{display:none}.mkt-welcome-login{min-height:auto;padding:32px 22px 45px}.mkt-welcome-benefits{gap:9px}}
+@media(max-width:440px){.mkt-welcome-scenarios{grid-template-columns:1fr}.mkt-welcome-login h2{font-size:34px}.mkt-welcome-overline{margin-bottom:22px}}
