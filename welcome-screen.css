@@ -51,3 +51,5 @@ body.mkt-welcome-open>.site-header,body.mkt-welcome-open>main,body.mkt-welcome-o
 @media(max-width:1050px){#mktWelcome{grid-template-columns:48% 52%}.mkt-welcome-art-inner{padding:28px}.mkt-welcome-login{padding:28px}.mkt-welcome-copy h1{font-size:clamp(36px,4.7vw,58px)}}
 @media(max-width:720px){body.mkt-welcome-open{overflow:auto}#mktWelcome{position:fixed;display:block;overflow-y:auto}.mkt-welcome-art{min-height:auto}.mkt-welcome-art-inner{min-height:unset;padding:24px}.mkt-welcome-copy{padding:38px 0 25px;margin:0}.mkt-welcome-copy h1{font-size:clamp(37px,8vw,51px)}.mkt-welcome-intro{margin-bottom:26px}.mkt-welcome-art-footer{display:none}.mkt-welcome-login{min-height:auto;padding:32px 22px 45px}.mkt-welcome-benefits{gap:9px}}
 @media(max-width:440px){.mkt-welcome-scenarios{grid-template-columns:1fr}.mkt-welcome-login h2{font-size:34px}.mkt-welcome-overline{margin-bottom:22px}}
+
+.mkt-welcome-actual-logo{display:block;box-sizing:border-box;width:112px;height:65px;object-fit:contain;background:#fff;border-radius:11px;padding:6px;flex:none}
