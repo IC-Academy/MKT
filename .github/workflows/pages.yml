@@ -29,6 +29,7 @@ jobs:
           node --check recruitment-budget.js
           node --check role-dashboard.js
           node --check welcome-screen.js
+          node --check workspace-shell.js
       - name: Check portal behavior
         run: |
           npm install --prefix "$RUNNER_TEMP/mkt-tests" --no-audit --no-fund jsdom@26.1.0
@@ -38,7 +39,7 @@ jobs:
       - name: Prepare public files
         run: |
           mkdir -p _site
-          cp index.html style.css app.js detail-enhancements.js design-process.js campaign-brief.js cash-campaign.js campaign-effectiveness.js recruitment-budget.js role-dashboard.js welcome-screen.js welcome-screen.css favicon.svg .nojekyll _site/
+          cp index.html style.css app.js detail-enhancements.js design-process.js campaign-brief.js cash-campaign.js campaign-effectiveness.js recruitment-budget.js role-dashboard.js welcome-screen.js welcome-screen.css workspace-shell.js workspace-shell.css favicon.svg .nojekyll _site/
           cp -r assets _site/
       - uses: actions/upload-pages-artifact@v3
         with:
