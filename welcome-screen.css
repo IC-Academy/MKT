@@ -94,3 +94,10 @@ body.mkt-shell-active #solicitar>.hero{display:none!important}
 body:not(.mkt-shell-active) .mkt-corporate-brand{display:flex!important;align-items:center!important;justify-content:flex-start!important;max-width:min(44vw,340px)!important;width:auto!important;min-width:0!important}
 body:not(.mkt-shell-active) .mkt-corporate-logo{display:block!important;width:clamp(205px,24vw,315px)!important;height:auto!important;max-height:70px!important;object-fit:contain!important;object-position:left center!important}
 @media(max-width:720px){body:not(.mkt-shell-active) .mkt-corporate-brand{max-width:80vw!important}body:not(.mkt-shell-active) .mkt-corporate-logo{width:clamp(190px,51vw,270px)!important;max-height:58px!important}}
+
+/* Raster oficial: conservar proporción y nitidez, sin filtros ni transformaciones. */
+body:not(.mkt-shell-active) .mkt-corporate-brand{max-width:min(46vw,410px)!important}
+body:not(.mkt-shell-active) .mkt-corporate-logo{width:clamp(280px,29vw,395px)!important;max-height:91px!important;height:auto!important;object-fit:contain!important;object-position:left center!important;image-rendering:auto!important;transform:none!important;filter:none!important}
+body:not(.mkt-shell-active) .site-header{height:112px!important;min-height:112px!important}
+body:not(.mkt-shell-active) #solicitar>.hero{min-height:calc(100dvh - 112px)!important}
+@media(max-width:720px){body:not(.mkt-shell-active) .mkt-corporate-brand{max-width:82vw!important}body:not(.mkt-shell-active) .mkt-corporate-logo{width:clamp(215px,58vw,345px)!important;max-height:77px!important}body:not(.mkt-shell-active) .site-header{height:95px!important;min-height:95px!important}body:not(.mkt-shell-active) #solicitar>.hero{min-height:calc(100dvh - 95px)!important}}
