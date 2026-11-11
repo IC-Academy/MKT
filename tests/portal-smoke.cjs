@@ -26,9 +26,14 @@ assert.ok(d.querySelector('#campana-employeeNumber'),'Employee number field requ
 const selectors=d.querySelectorAll('input[name="clients"]');
 assert.equal(selectors.length,21,'Authorized service list must contain 21 entries');
 assert.ok(d.querySelector('.brand-logo-crop img'),'Corporate marketing logo missing from header');
+assert.equal(d.querySelector('.brand-logo-crop img').getAttribute('src'),'assets/mkt-area-logo.svg','Brand must use actual MKT logo, not a screenshot');
+assert.ok(fs.existsSync('assets/mkt-area-logo.svg'),'Actual MKT area logo asset must be available');
+assert.ok(d.querySelector('#commForm [name="category"]').textContent.includes('Salud / NOM-035'),'Comunicado should offer Salud / NOM-035');
+assert.ok(fs.readFileSync('design-process.js','utf8').includes("quantity.max='12'"),'Prototipado must support 1 to 12 applications');
 assert.ok(html.includes('welcome-screen.css'),'Welcome styles must be published');
 assert.ok(d.querySelector('#mktWelcome'),'Welcome entry view must exist');
 assert.ok(d.querySelector('#mktSidebar'),'Workspace navigation sidebar should be present');
+assert.equal(d.querySelector('.mkt-side-logo').getAttribute('src'),'assets/mkt-area-logo.svg','Sidebar must use actual MKT logo');
 assert.ok(html.includes('workspace-shell.css'),'Workspace sidebar styles should be included');
 assert.match(d.querySelector('#mktWelcome').textContent,/De una idea/);
 assert.ok(d.body.classList.contains('mkt-welcome-open'),'Welcome must open on first visit');
