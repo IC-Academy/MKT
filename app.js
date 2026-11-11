@@ -61,6 +61,7 @@ const commDescriptions={
  Operativo:'Remodelaciones, accesos, mantenimiento y actualizaciones de procesos.',
  'Cultura / Experiencia':'Eventos, actividades internas, reconocimientos y experiencia del colaborador.',
  'Salud / NOM-035':'Campañas de salud, vacunación, prevención y bienestar psicológico, incluida la NOM-035.',
+ Recordatorios:'Fechas límite, convocatorias, recordatorios de trámites, eventos o actividades.',
  Urgente:'Avisos prioritarios que requieren difusión inmediata o acciones en un plazo muy corto.'
 };
 function syncCommCategory(){const sel=document.querySelector('#commForm [name="category"]');const box=document.querySelector('#commCategoryInfo');if(box&&sel)box.textContent=commDescriptions[sel.value]||'Selecciona una categoría para conocer qué mensajes corresponden.';}
