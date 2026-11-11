@@ -68,3 +68,17 @@ body.mkt-shell-active .view{min-width:0}
 body.mkt-shell-active #diseno,body.mkt-shell-active #comunicado,body.mkt-shell-active #proyectos,body.mkt-shell-active #campana,body.mkt-shell-active #reporte{width:100%;max-width:100%}
 @media(max-width:1460px){body.mkt-shell-active .comm-layout{grid-template-columns:minmax(0,1fr)!important}body.mkt-shell-active .comm-aside{margin-top:14px}body.mkt-shell-active .comm-main{width:100%}}
 @media(max-width:760px){body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded)>main,body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded)>footer{margin-left:0}body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) #mktSidebar{width:min(290px,84vw);overflow:auto}body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-brand-name,body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-section>p,body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-section>button>span:not(.mkt-side-icon),body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-bottom{display:initial}body.mkt-shell-active.mkt-form-focused:not(.mkt-sidebar-expanded) .mkt-side-section>button{justify-content:flex-start}}
+
+/* El logotipo oficial MKT IC ya es un recurso limpio; nunca debe recortarse como captura. */
+.brand-logo-crop{width:172px!important;height:68px!important;display:block!important;overflow:visible!important;background:transparent!important}
+.brand-logo-crop img{display:block!important;width:172px!important;height:68px!important;max-width:100%!important;object-fit:contain!important;transform:none!important}
+.mkt-side-logo{background:#fff!important;object-fit:contain!important;padding:7px!important;filter:none!important}
+/* En un formulario, el área principal prioriza los campos y permite reducir la ayuda. */
+body.mkt-shell-active.mkt-form-focused .comm-layout{gap:clamp(12px,1.6vw,25px)}
+body.mkt-shell-active.mkt-form-focused .comm-main{padding:clamp(16px,2vw,30px)}
+body.mkt-shell-active.mkt-form-focused .comm-aside{padding:clamp(14px,1.7vw,24px)}
+body.mkt-shell-active.mkt-form-focused .comm-main fieldset{min-width:0}
+body.mkt-shell-active.mkt-form-focused .comm-main .steps{display:flex;align-items:stretch;flex-wrap:wrap}
+body.mkt-shell-active.mkt-form-focused .comm-main .steps li{font-size:clamp(12px,1vw,15px)}
+@media(max-width:1050px){body.mkt-shell-active .comm-layout{grid-template-columns:minmax(0,1fr)!important}body.mkt-shell-active .comm-aside{order:2;position:static}}
+@media(max-width:760px){body.mkt-shell-active .comm-main{padding:16px!important}body.mkt-shell-active.mkt-form-focused .comm-main .steps li{flex:1 1 88px}body.mkt-shell-active .comm-layout{gap:12px}}
