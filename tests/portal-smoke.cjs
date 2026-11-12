@@ -80,5 +80,29 @@ assert.match(d.querySelector('#mktSideNav').textContent,/Presupuestos regionales
 d.querySelector('#accessButton').click();
 d.querySelector('[data-profile="veronica"]').click();
 assert.match(d.querySelector('#mktRoleDashboard').textContent,/Estudio de diseño/);
+// Prototipado: el máximo de artículos debe coincidir con la cantidad solicitada.
+d.querySelector('[data-side-route="diseno"]').click();
+d.querySelector('[data-design-service="prototype"]').click();
+const prot=d.querySelector('#diseno .comm-main form');
+assert.ok(prot,'Prototype form should open');
+const person=prot.querySelector('[name="person"]');
+const area=prot.querySelector('[name="area"]');
+const date=prot.querySelector('[name="date"]');
+person.value='Usuario de prueba';area.value=area.options[1].value;date.value='2026-12-01';
+prot.querySelector('[data-next]').click();
+const quantity=prot.querySelector('[name="quantity"]');
+const boxes=[...prot.querySelectorAll('[name="articles"]')];
+quantity.value='5';quantity.dispatchEvent(new w.Event('input',{bubbles:true}));
+assert.equal(boxes.filter(b=>!b.disabled).length,boxes.length,'Before selection all items should be enabled');
+for(const box of boxes.slice(0,5)){box.checked=true;box.dispatchEvent(new w.Event('change',{bubbles:true}));}
+assert.equal(boxes.filter(b=>b.checked).length,5,'Five selections must be accepted');
+assert.ok(boxes.slice(5).every(b=>b.disabled),'The sixth selection must be blocked');
+assert.match(prot.querySelector('[data-articles-counter]').textContent,/5 de 5/);
+boxes[0].checked=false;boxes[0].dispatchEvent(new w.Event('change',{bubbles:true}));
+assert.ok(boxes.slice(5).every(b=>!b.disabled),'Unchecking must release the selection limit');
+quantity.value='2';quantity.dispatchEvent(new w.Event('input',{bubbles:true}));
+assert.equal(boxes.filter(b=>b.checked).length,2,'Reducing quantity must automatically trim extras');
+quantity.value='';quantity.dispatchEvent(new w.Event('input',{bubbles:true}));
+assert.ok(boxes.every(b=>b.disabled),'Articles must be disabled until quantity is entered');
 dom.window.close();
 console.log('PASS: MKT logo, clean landing, two-stage sign-in, all role choices, 21 clients and role dashboards.');
