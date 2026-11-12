@@ -24,3 +24,7 @@ GitHub Pages mediante el workflow `.github/workflows/pages.yml`. Si Pages aún n
 ## Desarrollo
 
 Editar `index.html`, `style.css` y `app.js`. No requiere compilación ni dependencias.
+
+## Diagnóstico de dominio personalizado
+
+La raíz https://marketing.intercon.com.mx/ debe responder HTTP 200 y cargar la misma página que /index.html. Tras un cambio de dominio, GitHub Pages puede conservar respuestas 404 en nodos de su CDN; cada despliegue vuelve a publicar el artefacto, pero no garantiza purgar inmediatamente todas las cachés. Revisar cabeceras Age, X-Cache, X-GitHub-Edge-Region, y validar ambas rutas con GET.
