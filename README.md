@@ -11,6 +11,12 @@ Portal estático con acceso a los cuatro Microsoft Forms y demo interactiva de g
 
 La gestión es una demo: no contiene autenticación, no recibe respuestas de Forms y no envía notificaciones. Los cambios se mantienen únicamente durante la visita.
 
+## URL oficial
+
+https://marketing.intercon.com.mx/
+
+El archivo `CNAME` y el artefacto de GitHub Pages apuntan al dominio personalizado. La verificación de DNS, HTTPS y configuración de Pages se realiza en GitHub Settings → Pages.
+
 ## Publicación
 
 GitHub Pages mediante el workflow `.github/workflows/pages.yml`. Si Pages aún no está habilitado, configurar Settings → Pages → Source: GitHub Actions y ejecutar el workflow.
