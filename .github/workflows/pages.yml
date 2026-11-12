@@ -40,7 +40,7 @@ jobs:
       - name: Prepare public files
         run: |
           mkdir -p _site
-          cp index.html style.css app.js project-form.js detail-enhancements.js design-process.js campaign-brief.js cash-campaign.js campaign-effectiveness.js recruitment-budget.js role-dashboard.js welcome-screen.js welcome-screen.css workspace-shell.js workspace-shell.css favicon.svg .nojekyll _site/
+          cp index.html style.css app.js project-form.js detail-enhancements.js design-process.js campaign-brief.js cash-campaign.js campaign-effectiveness.js recruitment-budget.js role-dashboard.js welcome-screen.js welcome-screen.css workspace-shell.js workspace-shell.css favicon.svg CNAME .nojekyll _site/
           cp -r assets _site/
       - uses: actions/upload-pages-artifact@v3
         with:
