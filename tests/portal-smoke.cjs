@@ -83,7 +83,7 @@ assert.match(d.querySelector('#mktRoleDashboard').textContent,/Estudio de diseñ
 // Prototipado: el máximo de artículos debe coincidir con la cantidad solicitada.
 d.querySelector('[data-side-route="diseno"]').click();
 d.querySelector('[data-design-service="prototype"]').click();
-const prot=d.querySelector('#diseno .comm-main form');
+const prot=d.querySelector('#diseno [data-process-step="0"]')?.closest('form');
 assert.ok(prot,'Prototype form should open');
 const person=prot.querySelector('[name="person"]');
 const area=prot.querySelector('[name="area"]');
