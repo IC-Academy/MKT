@@ -1,0 +1,23 @@
+# Ejemplo de configuración del proxy de API. Copiar a wrangler.toml (no versionar secretos).
+name = "mkt-api-proxy"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+routes = [{ pattern = "api.marketing.intercon.com.mx/mkt/v1/*", zone_name = "intercon.com.mx" }]
+
+[vars]
+N8N_WEBHOOK_BASE = "https://jmejiaromero.app.n8n.cloud/webhook"
+
+# Secreto compartido con n8n (NO en este archivo):  npx wrangler secret put PROXY_SECRET
+
+# Límites (Workers Rate Limiting API). Ajustar tras pruebas de aceptación.
+[[unsafe.bindings]]
+name = "RL_AUTH"
+type = "ratelimit"
+namespace_id = "1001"
+simple = { limit = 10, period = 60 }   # 10 peticiones OTP por minuto por IP
+
+[[unsafe.bindings]]
+name = "RL_API"
+type = "ratelimit"
+namespace_id = "1002"
+simple = { limit = 120, period = 60 }  # 120 peticiones de API por minuto por IP
