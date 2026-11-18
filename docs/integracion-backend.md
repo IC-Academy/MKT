@@ -38,3 +38,13 @@ No fusionar a `main` (publica GitHub Pages) hasta completar el checklist del doc
 - Formularios sin tipo de backend (fotografía, cobertura, prototipado, brief de campaña) muestran «aún no conectado».
 - Adjuntos/entregables: requieren la integración con SharePoint (subida mediante sesión de carga generada por el backend).
 - Textos de éxito de los formularios: hoy dicen «guardada temporalmente»; el adaptador los sustituye por el folio real.
+
+## Preparación del frontend operativo (revisión de aceptación)
+
+- Rama de trabajo: `feature/mkt-frontend-real-qa` (derivada de `feature/integracion-backend`). No se despliega sobre `main`.
+- Cuando `MKT_CONFIG.enabled === true` y `apiBase` apunta al proxy protegido, el acceso usa OTP y la sesión devuelta por MKT_01/MKT_01B; nunca permite seleccionar perfiles simulados.
+- En modo conectado, los formularios no pueden guardar solicitudes en el array demo como alternativa silenciosa a un fallo de validación.
+- El panel **Equipo y asignaciones / Usuarios** no crea ni edita usuarios en el navegador. Los registros reales ya existen en `MKT_Usuarios` y `MKT_UsuarioRoles`; la edición web se habilitará solo tras exponer una API administrativa protegida por RBAC. Hasta entonces muestra un aviso informativo sin tarjetas ficticias.
+- Las pruebas `tests/backend-adapter.cjs` incluyen comprobaciones de eliminación de perfiles `@example.com` y desactivación de altas locales en modo conectado.
+
+**Para habilitar el portal operativo:** se requiere desplegar el proxy con limitación de peticiones y protección de la ruta directa de n8n, configurar `MKT_AUTH_SECRET_V2`, activar los workflows bajo un entorno de aceptación y disponer de usuarios reales con roles activos. No cambiar simplemente `enabled: true` en `main`: sin el proxy y los workflows listos no habría autenticación utilizable.
