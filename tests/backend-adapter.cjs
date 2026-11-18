@@ -62,6 +62,13 @@ const tick=async(n=8)=>{for(let i=0;i<n;i++)await new Promise(r=>setTimeout(r,0)
   assert.equal(lst.headers.Authorization,'Bearer '+TOKEN);
   for(const c of calls.filter(x=>x.url.includes('/solicitudes'))){const s=JSON.stringify(c.body);assert.ok(!/roles|usuario|perfil|correo/i.test(s),'El navegador no envía identidad ni roles: '+s);}
   assert.ok(d.querySelector('#rows').textContent.includes('MKT-2026-000012'),'Bandeja con folio real');
+  // Modo conectado: el directorio demo no representa usuarios reales.
+  vm.runInContext("view('usuarios')",ctx);await tick();
+  assert.ok(d.querySelector('#userCards').textContent.includes('Directorio corporativo'),'La gestión de usuarios indica dependencia de API real');
+  assert.ok(!d.querySelector('#userCards').textContent.includes('@example.com'),'Sin correos simulados');
+  assert.equal(d.querySelector('#addUser').hidden,true,'No permite crear usuarios solo en el navegador');
+  assert.equal(d.querySelector('#teamFaces').children.length,0,'No muestra equipo ficticio');
+
   // 3) Detalle: transiciones permitidas y responsables desde el servidor
   vm.runInContext("openDetail('MKT-2026-000012')",ctx);await tick(20);
   const opts=[...d.querySelectorAll('#editStatus option')].map(o=>o.value).filter(Boolean);
