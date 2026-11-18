@@ -31,16 +31,20 @@ jobs:
           node --check role-dashboard.js
           node --check welcome-screen.js
           node --check workspace-shell.js
+          node --check mkt-config.js
+          node --check mkt-api.js
+          node --check mkt-backend.js
       - name: Check portal behavior
         run: |
           npm install --prefix "$RUNNER_TEMP/mkt-tests" --no-audit --no-fund jsdom@26.1.0
           MKT_JSDOM="$RUNNER_TEMP/mkt-tests/node_modules/jsdom" node tests/portal-smoke.cjs
+          MKT_JSDOM="$RUNNER_TEMP/mkt-tests/node_modules/jsdom" node tests/backend-adapter.cjs
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Prepare public files
         run: |
           mkdir -p _site
-          cp index.html style.css app.js project-form.js detail-enhancements.js design-process.js campaign-brief.js cash-campaign.js campaign-effectiveness.js recruitment-budget.js role-dashboard.js welcome-screen.js welcome-screen.css workspace-shell.js workspace-shell.css favicon.svg CNAME 404.html .nojekyll _site/
+          cp index.html style.css app.js project-form.js detail-enhancements.js design-process.js campaign-brief.js cash-campaign.js campaign-effectiveness.js recruitment-budget.js role-dashboard.js welcome-screen.js welcome-screen.css workspace-shell.js workspace-shell.css mkt-config.js mkt-api.js mkt-backend.js favicon.svg CNAME 404.html .nojekyll _site/
           cp -r assets _site/
       - uses: actions/upload-pages-artifact@v3
         with:

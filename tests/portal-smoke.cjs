@@ -3,7 +3,7 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const {JSDOM}=require(process.env.MKT_JSDOM||'jsdom');
 const html=fs.readFileSync('index.html','utf8');
-const scripts=['app.js','detail-enhancements.js','design-process.js','campaign-brief.js','cash-campaign.js','campaign-effectiveness.js','recruitment-budget.js','role-dashboard.js','welcome-screen.js','workspace-shell.js'];
+const scripts=['app.js','detail-enhancements.js','design-process.js','campaign-brief.js','cash-campaign.js','campaign-effectiveness.js','recruitment-budget.js','role-dashboard.js','welcome-screen.js','workspace-shell.js','mkt-config.js','mkt-api.js','mkt-backend.js'];
 for(const file of scripts){assert.ok(fs.existsSync(file),'Missing script: '+file);assert.ok(html.includes(file),'Script missing from index: '+file);}
 assert.ok(fs.existsSync('assets/mkt-area-logo.svg'),'User-supplied MKT IC logo required');
 const dom=new JSDOM(html,{url:'https://example.test/#solicitar',runScripts:'outside-only',pretendToBeVisual:true});
