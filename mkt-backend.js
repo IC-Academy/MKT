@@ -164,7 +164,8 @@
     const form = ev.target;
     if (!(form instanceof HTMLFormElement) || !form.closest('.view')) return;
     const tipo = tipoDeFormulario(form);
-    capturado = tipo ? { tipo, datos: serializar(form), form, en: Date.now(), clave: api.nuevaClave() } : { tipo: null, form, en: Date.now() };
+    const adjuntos = Array.from(form.querySelectorAll('input[type="file"]')).flatMap(i => Array.from(i.files || []));
+    capturado = tipo ? { tipo, datos: serializar(form), form, en: Date.now(), clave: api.nuevaClave(), adjuntos } : { tipo: null, form, en: Date.now() };
   }, true);
   const addDemoOriginal = window.addDemoRequest;
   window.addDemoRequest = function (r) {
@@ -179,7 +180,7 @@
       .then(res => {
         if (folioEl) folioEl.textContent = 'Folio ' + res.folio + ' · ' + res.estado + '. Marketing recibió tu solicitud.';
         aviso('Solicitud registrada con folio ' + res.folio + '.');
-        return cargarSolicitudes();
+        return subirAdjuntos(res.solicitudId, c.adjuntos || [], folioEl, res.folio).then(cargarSolicitudes);
       })
       .catch(e => {
         const det = (e.detalles || []).slice(0, 3).map(d => d.campo + ': ' + d.mensaje).join(' · ');
@@ -187,6 +188,92 @@
         aviso('No se registró la solicitud: ' + errorTexto(e));
       });
   };
+
+  // ---------- Archivos (MKT_06: puente Power Automate → SharePoint) ----------
+  const A = api.archivos;
+  const kb = n => n >= 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round((n || 0) / 1024)) + ' KB';
+  const ESTADO_ARCHIVO = { Pendiente: 'Cargando', Disponible: 'Disponible', Validado: 'Entregable registrado', Rechazado: 'Rechazado', Expirado: 'Expirado' };
+  const FASE = { preparando: 'Calculando huella del archivo…', cargando: 'Enviando', confirmando: 'Esperando confirmación de SharePoint…', listo: 'Archivo verificado en SharePoint.' };
+  const textoProgreso = p => (FASE[p.fase] || '') + (p.fase === 'cargando' && p.partes > 1 ? ' parte ' + p.parte + ' de ' + p.partes + '…' : p.fase === 'cargando' ? '…' : '');
+
+  // Adjuntos capturados en el formulario de creación → Referencia (uno a uno; un error no cancela los demás).
+  async function subirAdjuntos(solicitudId, lista, folioEl, folio) {
+    if (!lista.length || !solicitudId) return;
+    const fallidos = [];
+    for (let i = 0; i < lista.length; i++) {
+      const f = lista[i];
+      const rev = A.revisar(f, 'Referencia');
+      if (!rev.ok) { fallidos.push(f.name + ': ' + rev.mensaje); continue; }
+      try {
+        await A.subir(solicitudId, 'Referencia', f, p => { if (folioEl) folioEl.textContent = 'Folio ' + folio + ' · adjunto ' + (i + 1) + ' de ' + lista.length + ' (' + f.name + '): ' + textoProgreso(p); });
+      } catch (e) { fallidos.push(f.name + ': ' + errorTexto(e)); }
+    }
+    const ok = lista.length - fallidos.length;
+    if (folioEl) folioEl.textContent = 'Folio ' + folio + ' registrado. Adjuntos verificados: ' + ok + ' de ' + lista.length + '.' + (fallidos.length ? ' No se cargaron: ' + fallidos.join(' · ') : '');
+    if (fallidos.length) aviso('Algunos adjuntos no se cargaron. Puedes agregarlos desde el detalle de la solicitud.');
+  }
+
+  function panelArchivos(r, s, esResp, esSol) {
+    let caja = $('#mktArchivos');
+    if (!caja) {
+      caja = document.createElement('section'); caja.id = 'mktArchivos';
+      $('#detailHistory').previousElementSibling.insertAdjacentElement('beforebegin', caja);
+    }
+    const puedeEntregar = esAdmin() || esResp;
+    const cats = ['Referencia', 'Brief'].concat(puedeEntregar ? ['Entregable'] : []);
+    const terminal = ['Finalizada', 'Rechazada', 'Cancelada'].includes(r.estado);
+    caja.innerHTML = '<h3>Archivos</h3><div id="mktArchivosLista" class="history-list"><p class="secondary">Cargando archivos…</p></div>'
+      + (terminal ? '' : '<div class="edit-grid"><label>Tipo de archivo<select id="mktArchivoCat">' + cats.map(c => '<option>' + c + '</option>').join('') + '</select></label>'
+      + '<label>Archivo<input id="mktArchivoInput" type="file"></label></div>'
+      + '<p class="field-help" id="mktArchivoAyuda"></p>'
+      + '<div class="dialog-actions"><button type="button" id="mktArchivoSubir">Subir archivo</button></div>'
+      + '<progress id="mktArchivoProgreso" max="100" value="0" hidden style="width:100%"></progress><p class="secondary" id="mktArchivoEstado" aria-live="polite"></p>');
+    const ayuda = () => { const c = $('#mktArchivoCat').value, g = A.REGLAS[c]; $('#mktArchivoAyuda').textContent = 'Formatos: ' + g.ext.join(', ') + '. Máximo ' + Math.min(g.max, A.LIMITE_TRANSPORTE) / 1048576 + ' MB por archivo.'; $('#mktArchivoInput').accept = g.ext.map(e => '.' + e).join(','); };
+    if (!terminal) {
+      $('#mktArchivoCat').onchange = () => { ayuda(); revisarSeleccion(); };
+      const revisarSeleccion = () => { const f = $('#mktArchivoInput').files[0]; const rv = f ? A.revisar(f, $('#mktArchivoCat').value) : null; $('#mktArchivoEstado').textContent = rv && !rv.ok ? rv.mensaje : ''; $('#mktArchivoSubir').disabled = !f || !rv.ok; };
+      $('#mktArchivoInput').onchange = revisarSeleccion;
+      ayuda(); revisarSeleccion();
+      $('#mktArchivoSubir').onclick = async () => {
+        const f = $('#mktArchivoInput').files[0], cat = $('#mktArchivoCat').value;
+        if (!f) return;
+        const btn = $('#mktArchivoSubir'), pr = $('#mktArchivoProgreso'), st = $('#mktArchivoEstado');
+        btn.disabled = true; pr.hidden = false; pr.value = 0;
+        try {
+          await A.subir(r.backendId, cat, f, p => { pr.value = p.pct; st.textContent = textoProgreso(p); });
+          st.textContent = '«' + f.name + '» quedó disponible.'; $('#mktArchivoInput').value = '';
+          aviso('Archivo cargado y verificado.');
+        } catch (e) {
+          st.textContent = e.code === 'DUPLICADO_CONTENIDO' ? 'Este archivo ya está cargado en la solicitud.' : errorTexto(e);
+        } finally { pr.hidden = true; btn.disabled = false; listarArchivos(r, esResp); }
+      };
+    }
+    listarArchivos(r, esResp);
+  }
+
+  function listarArchivos(r, esResp) {
+    const caja = $('#mktArchivosLista'); if (!caja) return;
+    A.listar(r.backendId).then(res => {
+      const lista = res.archivos || [];
+      if (!lista.length) { caja.innerHTML = '<p class="secondary">Sin archivos.</p>'; return; }
+      const entregable = (esAdmin() || esResp) && ['En proceso', 'En validacion'].includes(r.estado);
+      caja.innerHTML = lista.map(a => '<div><span class="history-dot"></span><p><strong>' + esc(a.nombre) + '</strong><span>'
+        + esc(a.categoria + ' · ' + (ESTADO_ARCHIVO[a.estado] || a.estado) + ' · ' + kb(a.tamanoBytes)) + '</span>'
+        + (a.descargable ? '<button type="button" class="text-button" data-descargar="' + esc(a.archivoId) + '">Descargar</button>' : '')
+        + (entregable && a.categoria === 'Entregable' && a.estado === 'Disponible' ? ' <button type="button" class="text-button" data-entregar="' + esc(a.archivoId) + '">Registrar como entregable</button>' : '')
+        + '</p></div>').join('');
+      caja.querySelectorAll('[data-descargar]').forEach(b => b.onclick = async () => {
+        const t = b.textContent; b.disabled = true; b.textContent = 'Solicitando…';
+        try { await A.descargar(b.dataset.descargar, () => { b.textContent = 'Preparando descarga…'; }); b.textContent = t; }
+        catch (e) { aviso(errorTexto(e)); b.textContent = t; } finally { b.disabled = false; }
+      });
+      caja.querySelectorAll('[data-entregar]').forEach(b => b.onclick = async () => {
+        b.disabled = true;
+        try { await api.entregable(r.backendId, b.dataset.entregar, $('#comments').value.trim() || undefined); aviso('Entregable registrado. Se notificó al solicitante.'); listarArchivos(r, esResp); }
+        catch (e) { aviso(errorTexto(e)); b.disabled = false; }
+      });
+    }).catch(e => { caja.innerHTML = '<p class="secondary">' + esc(errorTexto(e)) + '</p>'; });
+  }
 
   // ---------- Detalle, historial y actualización (MKT_03 / MKT_04) ----------
   const openOriginal = window.openDetail;
@@ -204,8 +291,9 @@
     sel.disabled = !permitidas.length;
     sel.onchange = () => { const req = REQUIERE_MOTIVO.includes(sel.value); $('#reasonLabel').hidden = !req; $('#reason').required = req; };
     sel.onchange();
-    // Evidencias por enlace deshabilitadas: los entregables se registran con IDs de SharePoint (pendiente de integración).
-    const ev = $('#evidence'); ev.value = ''; ev.disabled = true; ev.placeholder = 'Entregables vía SharePoint (pendiente de integración)';
+    // Sin enlaces de evidencia: los archivos se cargan y descargan mediante MKT_06 (SharePoint, sin enlaces públicos).
+    const ev = $('#evidence'); ev.value = ''; ev.disabled = true; ev.closest('label').hidden = true;
+    panelArchivos(r, s, esResp, esSol);
     $('#comments').placeholder = esSol && !esAdmin() ? (r.estado === 'Pendiente informacion' ? 'Responde la información solicitada.' : 'Agrega una observación para Marketing.') : 'Agrega un avance o una nota para el equipo.';
     // Responsables (solo Administración): candidatos activos con rol compatible, calculados en el servidor
     const asg = $('#assigned');
@@ -223,8 +311,6 @@
       const brief = $('#detailBody .brief'); if (brief) brief.textContent = d.descripcion || '';
       const pares = Object.entries(d.datos || {}).filter(([, v]) => v !== '' && v !== null && typeof v !== 'object').slice(0, 40);
       if (pares.length && typeof pairsHTML === 'function') $('#detailBody').insertAdjacentHTML('beforeend', pairsHTML(pares.map(([k, v]) => [k, String(v)])));
-      const archivos = (d.archivos || []).map(a => '<li>' + esc(a.nombre) + ' · ' + esc(a.tipo || '') + ' · ' + esc(Math.round((a.tamanoBytes || 0) / 1024)) + ' KB</li>').join('');
-      if (archivos) $('#detailBody').insertAdjacentHTML('beforeend', '<h3>Entregables</h3><ul class="request-guidance">' + archivos + '</ul>');
       $('#detailHistory').innerHTML = (d.historial || []).slice().reverse().map(h => '<div><span class="history-dot"></span><p><strong>' + esc(h.actor ? h.actor.nombre : 'Sistema') + '</strong><span>'
         + esc(h.evento + (h.estadoNuevo && h.estadoAnterior && h.estadoNuevo.valor !== h.estadoAnterior.valor ? ': ' + h.estadoAnterior.etiqueta + ' → ' + h.estadoNuevo.etiqueta : '') + (h.comentario ? ' · ' + h.comentario : ''))
         + '</span><small>' + esc(new Date(h.fechaUTC).toLocaleString('es-MX')) + '</small></p></div>').join('') || '<p class="secondary">Sin eventos.</p>';
