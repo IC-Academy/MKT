@@ -30,6 +30,36 @@
   let cache = {};             // solicitudId -> registro del backend
   const esAdmin = () => !!perfil && perfil.roles.some(r => r === 'Administrador' || r === 'SuperAdmin');
 
+  // El directorio y sus roles existen en Airtable, pero esta versión aún no tiene API
+  // para editar usuarios. Nunca usar el formulario demo como sustituto.
+  renderUsers = function () {
+    const cards = $('#userCards');
+    if (!cards) return;
+    if (!perfil || !esAdmin()) { cards.replaceChildren(); return; }
+    cards.innerHTML = '<section role="status" class="user-card" style="grid-column:1/-1;padding:28px">'
+      + '<h2>Directorio corporativo</h2>'
+      + '<p>Los usuarios y sus roles están registrados en Airtable. Para consultar o modificar el directorio desde aquí falta habilitar el endpoint administrativo con autorización por rol.</p>'
+      + '<p class="secondary">No se muestran personas simuladas ni se guardan cambios locales.</p></section>';
+    const add = $('#addUser'); if (add) { add.hidden = true; add.disabled = true; }
+  };
+  $('#userForm')?.addEventListener('submit', ev => {
+    ev.preventDefault(); ev.stopImmediatePropagation();
+    aviso('La administración de usuarios requiere una API protegida.');
+  }, true);
+  $('#addUser')?.addEventListener('click', ev => {
+    ev.preventDefault(); ev.stopImmediatePropagation();
+    aviso('La administración de usuarios requiere una API protegida.');
+  }, true);
+  const renderDemo = render;
+  render = function () {
+    const result = renderDemo();
+    const faces = $('#teamFaces'); if (faces) faces.replaceChildren();
+    const access = $('#accessButton');
+    const subtitle = access && access.querySelector('small');
+    if (subtitle && perfil) subtitle.textContent = 'Sesión corporativa';
+    return result;
+  };
+
   // ---------- Sesión ----------
   function aplicarPerfil(u) {
     perfil = u;
@@ -63,8 +93,8 @@
 
   async function iniciarConPerfil(u, destino) {
     aplicarPerfil(u);
-    try { await cargarSolicitudes(); } catch (e) { aviso(errorTexto(e)); }
-    view(destino || (perfil.vistas.includes('equipo') ? 'equipo' : 'solicitar'));
+    try { await cargarSolicitudes(); } catch (e) { aviso('No se pudieron consultar las solicitudes: ' + errorTexto(e)); }
+    view(destino || ((perfil.vistas || []).includes('equipo') ? 'equipo' : 'solicitar'));
   }
 
   // ---------- Inicio de sesión OTP en la ventana aprobada ----------
@@ -167,11 +197,10 @@
     const adjuntos = Array.from(form.querySelectorAll('input[type="file"]')).flatMap(i => Array.from(i.files || []));
     capturado = tipo ? { tipo, datos: serializar(form), form, en: Date.now(), clave: api.nuevaClave(), adjuntos } : { tipo: null, form, en: Date.now() };
   }, true);
-  const addDemoOriginal = window.addDemoRequest;
   window.addDemoRequest = function (r) {
     const c = capturado; capturado = null;
     if (!perfil) { aviso('Inicia sesión para enviar la solicitud.'); window.showAccess(); return; }
-    if (!c || Date.now() - c.en > 10000) { addDemoOriginal(r); return; }
+    if (!c || Date.now() - c.en > 10000) { aviso('No se pudo validar el formulario. No se registró la solicitud. Vuelve a intentarlo.'); return; }
     if (!c.tipo) { aviso('Este formulario aún no está conectado al backend. No se guardó la solicitud.'); return; }
     const panel = c.form.closest('.view')?.querySelector('[data-success]');
     const folioEl = panel && panel.querySelector('[data-folio]');
