@@ -27,7 +27,7 @@
     const u=typeof currentUser==='function'?currentUser():null;
     if(!u){band.hidden=true;return}
     const p=roles.find(x=>x.role===u.role)||roles[0];band.hidden=false;
-    const chosen=p.actions.filter(([label,location])=>location!=='usuarios'||['Administración','Super Admin'].includes(u.role));
+    const chosen=p.actions.filter(([label,location])=>(location!=='usuarios'||['Administración','Super Admin'].includes(u.role))&&(!conectado||location!=='calendario'));
     band.innerHTML='<div class="mkt-role-dashboard-main"><div><span class="mkt-role-caption">'+(conectado?'ESPACIO DE TRABAJO':'PANEL SEGÚN ROL · DEMOSTRACIÓN')+'</span><h2>'+safe(p.title)+'</h2><p>'+safe(p.description)+'</p><div class="mkt-role-badges"><span>'+safe(u.role)+'</span><span>'+(conectado?'Sesión corporativa':'Sesión simulada')+'</span></div></div><div class="mkt-role-icon" aria-hidden="true">'+safe(u.name.split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase())+'</div></div><div class="mkt-role-actions">'+chosen.map(([label,location])=>'<button type="button" data-mkt-target="'+safe(location)+'">'+safe(label)+' <span aria-hidden="true">↗</span></button>').join('')+'</div>';
     band.querySelectorAll('[data-mkt-target]').forEach(b=>b.onclick=()=>{const target=b.dataset.mktTarget;if(target==='equipo'){document.querySelector('.inbox-panel')?.scrollIntoView({behavior:'smooth'});}else if(typeof view==='function')view(target)});
     const reset=document.querySelector('#reset');if(reset)reset.hidden=u.role==='Solicitante';
