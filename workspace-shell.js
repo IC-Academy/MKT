@@ -34,7 +34,7 @@
     document.body.classList.toggle('mkt-form-focused',['diseno','comunicado','campana','reporte','proyectos'].includes(currentView()));
     const sections=roleMap[u.role]||roleMap.Solicitante;
     // Los presupuestos todavía no disponen de API operativa: no ofrecer edición local como si fuese real.
-    const visibles=conectado()?sections.map(g=>({section:g.section,items:g.items.filter(item=>item[3]!=='recruitmentBudget')})).filter(g=>g.items.length):sections;
+    const visibles=conectado()?sections.map(g=>({section:g.section,items:g.items.filter(item=>item[3]!=='recruitmentBudget' && item[2]!=='calendario')})).filter(g=>g.items.length):sections;
     $('#mktSideNav').innerHTML=visibles.map(group=>'<div class="mkt-side-section"><p>'+escaped(group.section)+'</p>'+group.items.map(([icon,label,target,anchor])=>'<button type="button" title="'+escaped(label)+'" aria-label="'+escaped(label)+'" data-side-route="'+escaped(target)+'" '+(anchor?'data-side-anchor="'+escaped(anchor)+'" ':'')+'class="'+(currentView()===target&&!anchor?'is-active':'')+'"><span class="mkt-side-icon" aria-hidden="true">'+escaped(icon)+'</span><span>'+escaped(label)+'</span></button>').join('')+'</div>').join('');
     $('#mktSideSwitch').hidden=conectado();
     $('#mktSideExit').textContent=conectado()?'↪ Cerrar sesión':'↪ Cerrar sesión';
