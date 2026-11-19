@@ -1,10 +1,10 @@
-// Portal MKT · Configuración pública del frontend.
-// Integración real preparada: NO utilizar webhooks de n8n directamente ni publicar secretos aquí.
-// Los endpoints fallan cerrados hasta que TI despliegue el proxy y Claude habilite n8n.
-// Carga limitada temporalmente a una parte: Power Automate aún falla al confirmar archivos grandes.
+// Portal MKT: configuración pública del frontend.
+// La API es el gateway HTTPS MKT_00 de n8n. Sin tokens ni secretos en GitHub.
+// Piloto habilitado únicamente para el usuario corporativo autorizado.
+// MKT_02, MKT_04 y MKT_06 permanecen limitados por configuración del backend.
 window.MKT_CONFIG = Object.freeze({
   enabled: true,
-  apiBase: 'https://api.marketing.intercon.com.mx',
+  apiBase: 'https://jmejiaromero.app.n8n.cloud/webhook/gw',
   timeoutMs: 20000,
   maxUploadBytes: 2359296
 });
