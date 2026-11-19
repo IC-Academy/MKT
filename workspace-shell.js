@@ -19,6 +19,7 @@
   const scrim=document.createElement('button');scrim.id='mktShellScrim';scrim.setAttribute('aria-label','Cerrar menú');document.body.append(scrim);
   const compactRole={'Administración':'ADMIN','Super Admin':'SUPER ADMIN','Reclutamiento digital':'MKT DIGITAL','Gestión de proyectos':'PROYECTOS','Diseño':'DISEÑO','Comunicados':'COMUNICACIÓN','Solicitante':'SOLICITANTE'};
   const currentView=()=>document.body.dataset.view||'equipo';
+  const conectado=()=>document.body.dataset.backend==='conectado';
   function route(target,anchor){
     document.body.classList.remove('mkt-sidebar-expanded');
     $('#mktMobileMenu')?.setAttribute('aria-expanded','false');
@@ -32,7 +33,13 @@
     document.body.classList.add('mkt-shell-active');
     document.body.classList.toggle('mkt-form-focused',['diseno','comunicado','campana','reporte','proyectos'].includes(currentView()));
     const sections=roleMap[u.role]||roleMap.Solicitante;
-    $('#mktSideNav').innerHTML=sections.map(group=>'<div class="mkt-side-section"><p>'+escaped(group.section)+'</p>'+group.items.map(([icon,label,target,anchor])=>'<button type="button" title="'+escaped(label)+'" aria-label="'+escaped(label)+'" data-side-route="'+escaped(target)+'" '+(anchor?'data-side-anchor="'+escaped(anchor)+'" ':'')+'class="'+(currentView()===target&&!anchor?'is-active':'')+'"><span class="mkt-side-icon" aria-hidden="true">'+escaped(icon)+'</span><span>'+escaped(label)+'</span></button>').join('')+'</div>').join('');
+    // Los presupuestos todavía no disponen de API operativa: no ofrecer edición local como si fuese real.
+    const visibles=conectado()?sections.map(g=>({section:g.section,items:g.items.filter(item=>item[3]!=='recruitmentBudget')})).filter(g=>g.items.length):sections;
+    $('#mktSideNav').innerHTML=visibles.map(group=>'<div class="mkt-side-section"><p>'+escaped(group.section)+'</p>'+group.items.map(([icon,label,target,anchor])=>'<button type="button" title="'+escaped(label)+'" aria-label="'+escaped(label)+'" data-side-route="'+escaped(target)+'" '+(anchor?'data-side-anchor="'+escaped(anchor)+'" ':'')+'class="'+(currentView()===target&&!anchor?'is-active':'')+'"><span class="mkt-side-icon" aria-hidden="true">'+escaped(icon)+'</span><span>'+escaped(label)+'</span></button>').join('')+'</div>').join('');
+    $('#mktSideSwitch').hidden=conectado();
+    $('#mktSideExit').textContent=conectado()?'↪ Cerrar sesión':'↪ Cerrar sesión';
+    $('#mktSidebar').querySelector('.mkt-side-demo').textContent=conectado()?'● SESIÓN CORPORATIVA':'● ENTORNO DE DEMOSTRACIÓN';
+    topbar.querySelector('.mkt-shell-demo').textContent=conectado()?'ACCESO VERIFICADO':'MODO DEMO';
     $('#mktSideProfile').innerHTML='<span class="mkt-side-avatar">'+escaped(u.name.split(' ').map(s=>s.charAt(0)).slice(0,2).join('').toUpperCase())+'</span><span><strong>'+escaped(u.name)+'</strong><small>'+escaped(compactRole[u.role]||u.role)+'</small></span>';
     const labels={equipo:'Mi espacio de trabajo',usuarios:'Administración de usuarios',solicitar:'Solicitudes de Marketing',calendario:'Calendario',diseno:'Diseño y prototipado',comunicado:'Comunicados',campana:'Campañas de reclutamiento',reporte:'Efectividad de campañas',proyectos:'Proyectos'};
     $('#mktShellTitle').textContent=labels[currentView()]||'Portal MKT';
@@ -40,7 +47,7 @@
     $('#mktSideNav').querySelectorAll('[data-side-route]').forEach(b=>{b.classList.toggle('is-active',b.dataset.sideRoute===currentView()&&!b.dataset.sideAnchor)});
   }
   $('#mktSideSwitch').onclick=()=>$('#accessButton')?.click();
-  $('#mktSideExit').onclick=()=>{if(typeof currentUser==='function'&&currentUser()){ $('#accessButton')?.click();$('#logout')?.click(); }};
+  $('#mktSideExit').onclick=()=>{if(typeof currentUser==='function'&&currentUser()){ if(conectado()) { window.MKT_BACKEND?.salir(); } else { $('#accessButton')?.click();$('#logout')?.click(); } }};
   $('#mktMobileMenu').onclick=()=>{const show=!document.body.classList.contains('mkt-sidebar-expanded');document.body.classList.toggle('mkt-sidebar-expanded',show);$('#mktMobileMenu').setAttribute('aria-expanded',String(show))};
   scrim.onclick=()=>{document.body.classList.remove('mkt-sidebar-expanded');$('#mktMobileMenu').setAttribute('aria-expanded','false')};
   document.addEventListener('mkt:role-view',draw);
