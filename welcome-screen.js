@@ -42,6 +42,25 @@
   <div class="mkt-login-foot"><span>ENTORNO DE DEMOSTRACIÓN</span><span>Entra ID pendiente de integración</span></div>
  </section>`;
  document.body.appendChild(overlay);
+ // En algunos navegadores integrados el viewport visual es más angosto que el
+ // viewport de layout, incluso con meta viewport. Anclar el diálogo al área visible.
+ const fitLoginViewport=()=>{
+   const v=window.visualViewport;
+   const width=Math.max(240,Math.floor(v?.width||window.innerWidth));
+   const height=Math.max(280,Math.floor(v?.height||window.innerHeight));
+   overlay.style.setProperty('left',Math.round(v?.offsetLeft||0)+'px','important');
+   overlay.style.setProperty('top',Math.round(v?.offsetTop||0)+'px','important');
+   overlay.style.setProperty('right','auto','important');
+   overlay.style.setProperty('bottom','auto','important');
+   overlay.style.setProperty('width',width+'px','important');
+   overlay.style.setProperty('height',height+'px','important');
+   overlay.style.setProperty('max-width',width+'px','important');
+   overlay.style.setProperty('max-height',height+'px','important');
+ };
+ window.visualViewport?.addEventListener('resize',fitLoginViewport);
+ window.visualViewport?.addEventListener('scroll',fitLoginViewport);
+ window.addEventListener('resize',fitLoginViewport);
+ fitLoginViewport();
  const mail=$('#mktLoginMail');
  const emailStage=$('#mktLoginEmailStage'),profileStage=$('#mktLoginProfileStage');
  const form=$('#mktLoginEmailForm');
