@@ -101,3 +101,42 @@ body:not(.mkt-shell-active) .mkt-corporate-logo{width:clamp(280px,29vw,395px)!im
 body:not(.mkt-shell-active) .site-header{height:112px!important;min-height:112px!important}
 body:not(.mkt-shell-active) #solicitar>.hero{min-height:calc(100dvh - 112px)!important}
 @media(max-width:720px){body:not(.mkt-shell-active) .mkt-corporate-brand{max-width:82vw!important}body:not(.mkt-shell-active) .mkt-corporate-logo{width:clamp(215px,58vw,345px)!important;max-height:77px!important}body:not(.mkt-shell-active) .site-header{height:95px!important;min-height:95px!important}body:not(.mkt-shell-active) #solicitar>.hero{min-height:calc(100dvh - 95px)!important}}
+
+/* 2026-11-19: evitar desbordamiento horizontal del diálogo OTP en móviles. */
+#mktLoginOverlay{
+  box-sizing:border-box;
+  grid-template-columns:minmax(0,1fr);
+  width:100%;
+  max-width:100vw;
+  overflow-x:hidden;
+}
+#mktLoginOverlay *,#mktLoginOverlay *::before,#mktLoginOverlay *::after{box-sizing:border-box}
+#mktLoginOverlay .mkt-login-window{
+  min-width:0;
+  width:min(460px,100%);
+  max-width:100%;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overflow-wrap:anywhere;
+}
+#mktLoginOverlay .mkt-login-window > div,
+#mktLoginOverlay .mkt-login-window form,
+#mktLoginOverlay .mkt-login-window input,
+#mktLoginOverlay .mkt-login-window p{
+  min-width:0;
+  max-width:100%;
+}
+#mktLoginOverlay .mkt-login-actions{min-width:0;max-width:100%;flex-wrap:wrap}
+#mktLoginOverlay .mkt-login-primary{max-width:100%;min-width:0}
+#mktLoginOverlay .mkt-login-top{min-width:0;flex-wrap:wrap}
+#mktLoginOverlay .mkt-login-wordmark{min-width:0;max-width:100%;white-space:normal}
+#mktLoginOverlay .mkt-login-foot{min-width:0;max-width:none}
+@media(max-width:540px){
+  #mktLoginOverlay{padding:12px}
+  #mktLoginOverlay .mkt-login-window{width:100%;padding:22px 20px 0}
+  #mktLoginOverlay .mkt-login-window h2{font-size:clamp(23px,7vw,29px)}
+  #mktLoginOverlay .mkt-login-subtitle{font-size:13px}
+  #mktLoginOverlay .mkt-login-actions{justify-content:stretch}
+  #mktLoginOverlay .mkt-login-primary{width:100%;justify-content:center}
+  #mktLoginOverlay .mkt-login-foot{margin-left:-20px;margin-right:-20px;padding:13px 20px}
+}
