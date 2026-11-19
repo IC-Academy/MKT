@@ -133,8 +133,12 @@
       correoOTP = $('#mktLoginMail').value.trim().toLowerCase();
       if (!/^[^\s@]+@intercon\.com\.mx$/.test(correoOTP)) { err.textContent = 'Usa tu correo corporativo @intercon.com.mx.'; return; }
       err.textContent = '';
+      const btn = emailForm.querySelector('[type="submit"]');
+      if (btn.disabled) return;
+      btn.disabled = true; btn.textContent = 'Enviando código…';
       try { await pedirCodigo(); $('#mktLoginCodeAccount').textContent = correoOTP; mostrar('codigo'); }
       catch (e) { err.textContent = errorTexto(e); }
+      finally { btn.disabled = false; btn.innerHTML = 'Siguiente <span>→</span>'; }
     }, true);
     $('#mktLoginCodeBack').onclick = () => mostrar('email');
     $('#mktLoginResend').onclick = async () => {
@@ -146,11 +150,15 @@
       ev.preventDefault();
       const err = $('#mktLoginCodeError'), codigo = $('#mktLoginCode').value.trim();
       if (!/^\d{6}$/.test(codigo)) { err.textContent = 'El código tiene 6 dígitos.'; return; }
+      const btn = $('#mktLoginCodeForm button[type="submit"]');
+      if (btn.disabled) return;
+      btn.disabled = true; btn.textContent = 'Validando acceso…';
       try {
         const { usuario } = await api.verificarCodigo(correoOTP, codigo);
         $('#mktLoginCode').value = ''; err.textContent = ''; cerrar();
         await iniciarConPerfil(usuario, destinoTrasLogin === 'solicitar' ? 'solicitar' : null);
       } catch (e) { err.textContent = errorTexto(e); $('#mktLoginCode').select(); }
+      finally { btn.disabled = false; btn.innerHTML = 'Entrar <span>→</span>'; }
     });
     // Sustituye el selector de perfiles de demostración.
     window.showAccess = () => abrir(['equipo', 'calendario', 'usuarios'].includes(document.body.dataset.view) ? document.body.dataset.view : 'equipo');
