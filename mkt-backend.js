@@ -8,7 +8,7 @@
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const aviso = m => (typeof toast === 'function' ? toast(m) : alert(m));
-  const errorTexto = e => (e && e.mensaje) || (e && e.message) || 'Ocurrió un error inesperado.';
+  const errorTexto = e => e && (e.code === 'RED_NO_DISPONIBLE' || e.code === 'TIEMPO_AGOTADO') ? 'El acceso corporativo todavía no está disponible. La conexión con el servidor de autenticación debe ser habilitada por TI.' : ((e && e.mensaje) || (e && e.message) || 'Ocurrió un error inesperado.');
   document.body.dataset.backend = 'conectado';
 
   // ---------- Catálogos de presentación (el backend decide permisos; esto solo es UX) ----------
