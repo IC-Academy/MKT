@@ -62,6 +62,14 @@ const tick=async(n=8)=>{for(let i=0;i<n;i++)await new Promise(r=>setTimeout(r,0)
   assert.equal(lst.headers.Authorization,'Bearer '+TOKEN);
   for(const c of calls.filter(x=>x.url.includes('/solicitudes'))){const s=JSON.stringify(c.body);assert.ok(!/roles|usuario|perfil|correo/i.test(s),'El navegador no envía identidad ni roles: '+s);}
   assert.ok(d.querySelector('#rows').textContent.includes('MKT-2026-000012'),'Bandeja con folio real');
+  // UI corporativa conectada: nunca identificar esta sesión como demostración.
+  assert.equal(d.querySelector('.mkt-shell-demo').textContent,'ACCESO VERIFICADO');
+  assert.equal(d.querySelector('.mkt-side-demo').textContent,'● SESIÓN CORPORATIVA');
+  assert.equal(d.querySelector('#mktSideSwitch').hidden,true,'No ofrecer cambio a perfil demo');
+  assert.equal(d.querySelector('#mktSidebar').querySelectorAll('[data-side-route="calendario"]').length,0,'No anunciar calendario de datos de referencia');
+  assert.equal(d.querySelector('#mktSidebar').querySelectorAll('[data-side-anchor="recruitmentBudget"]').length,0,'No anunciar presupuesto local');
+  assert.equal(d.querySelector('#mktRoleDashboard').textContent.includes('Sesión simulada'),false,'Tablero sin sesión simulada');
+
   // Modo conectado: el directorio demo no representa usuarios reales.
   vm.runInContext("view('usuarios')",ctx);await tick();
   assert.ok(d.querySelector('#userCards').textContent.includes('Directorio corporativo'),'La gestión de usuarios indica dependencia de API real');
