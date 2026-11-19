@@ -13,8 +13,11 @@ w.scrollTo=()=>{};
 w.HTMLElement.prototype.scrollIntoView=()=>{};
 w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
 w.HTMLDialogElement.prototype.close=function(){this.open=false;};
+// Regression test: the demo UI remains testable in isolation even when production config enables OTP.
+// A separate backend-adapter test covers enabled:true, OTP, sessions and backend interactions.
 const ctx=dom.getInternalVMContext();
-for(const file of scripts)vm.runInContext(fs.readFileSync(file,'utf8'),ctx,{filename:file});
+vm.runInContext("window.MKT_CONFIG=Object.freeze({enabled:false,apiBase:'',timeoutMs:20000});",ctx);
+for(const file of scripts){if(file==='mkt-config.js')continue;vm.runInContext(fs.readFileSync(file,'utf8'),ctx,{filename:file});}
 const cardTitles=[...d.querySelectorAll('#formCards .card h2')].map(x=>x.textContent.trim());
 assert.ok(cardTitles.includes('Proyectos'),'Projects card missing');
 assert.ok(cardTitles.some(x=>/Campaña/i.test(x)),'Campaign card missing');
