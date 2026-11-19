@@ -5,7 +5,7 @@
   'use strict';
   const CFG = window.MKT_CONFIG || { enabled: false };
   const KEY = 'mkt.sesion';
-  const enabled = !!(CFG.enabled && /^https:\/\/[a-z0-9.-]+(:\d+)?$/i.test(String(CFG.apiBase || '').replace(/\/$/, '')));
+  const enabled = !!(CFG.enabled && /^https:\/\/[a-z0-9.-]+(?::\d+)?(?:\/[a-z0-9_-]+)*$/i.test(String(CFG.apiBase || '').replace(/\/$/, '')));
   const base = String(CFG.apiBase || '').replace(/\/$/, '');
 
   class ApiError extends Error {
