@@ -52,7 +52,7 @@
 
   // ---------- MKT_06 · Archivos ----------
   const MB = 1048576;
-  const LIMITE_TRANSPORTE = 15 * MB; // límite del puente por correo (tamaño real; el codificado se valida en el servidor)
+  const LIMITE_TRANSPORTE = Math.min(15 * MB, Number(CFG.maxUploadBytes) > 0 ? Number(CFG.maxUploadBytes) : 15 * MB); // modo temporal de una parte cuando el puente multiadjunto no está validado
   const TIPOS = {
     pdf: ['application/pdf'], docx: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
     xlsx: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'], pptx: ['application/vnd.openxmlformats-officedocument.presentationml.presentation'],
@@ -85,7 +85,7 @@
     if (!(TIPOS[ext] || []).includes(mime)) return { ok: false, mensaje: 'El tipo del archivo no corresponde a la extensión .' + ext + '.' };
     if (!file.size) return { ok: false, mensaje: 'El archivo está vacío.' };
     if (file.size > regla.max) return { ok: false, mensaje: 'El archivo pesa ' + mbTexto(file.size) + '; el máximo para ' + categoria + ' es ' + (regla.max / MB) + ' MB.' };
-    if (file.size > LIMITE_TRANSPORTE) return { ok: false, mensaje: 'El archivo pesa ' + mbTexto(file.size) + '; por ahora el portal acepta hasta 15 MB por archivo. Para archivos mayores, solicita a Marketing la carga directa en SharePoint.' };
+    if (file.size > LIMITE_TRANSPORTE) return { ok: false, mensaje: 'El archivo pesa ' + mbTexto(file.size) + '; por ahora el límite habilitado es ' + mbTexto(LIMITE_TRANSPORTE) + ' por archivo. Para archivos mayores, solicita a Marketing la carga directa en SharePoint.' };
     return { ok: true, ext, mime };
   }
   const archivoCall = (body, opciones) => call('POST', '/mkt/v1/archivos', body, true, Object.assign({ timeoutMs: 60000 }, opciones || {}));
