@@ -82,3 +82,38 @@ body.mkt-shell-active.mkt-form-focused .comm-main .steps{display:flex;align-item
 body.mkt-shell-active.mkt-form-focused .comm-main .steps li{font-size:clamp(12px,1vw,15px)}
 @media(max-width:1050px){body.mkt-shell-active .comm-layout{grid-template-columns:minmax(0,1fr)!important}body.mkt-shell-active .comm-aside{order:2;position:static}}
 @media(max-width:760px){body.mkt-shell-active .comm-main{padding:16px!important}body.mkt-shell-active.mkt-form-focused .comm-main .steps li{flex:1 1 88px}body.mkt-shell-active .comm-layout{gap:12px}}
+
+
+/* Portal conectado: nunca presentar datos de demostración como información corporativa. */
+body[data-backend="conectado"] .mkt-demo-marker,
+body[data-backend="conectado"] .mkt-demo-roles-note,
+body[data-backend="conectado"] .demo-banner,
+body[data-backend="conectado"] #recruitmentBudget,
+body[data-backend="conectado"] .mkt-budget-nav,
+body[data-backend="conectado"] #reset,
+body[data-backend="conectado"] #mktSideSwitch {display:none!important}
+body[data-backend="conectado"] .mkt-shell-demo {
+  background:#e7f4f0;
+  color:#195e52;
+  border:1px solid #b5dfd2;
+}
+body[data-backend="conectado"] .mkt-side-demo {
+  color:#b5e4d7;
+  border-color:#569b8a77;
+}
+body[data-backend="conectado"] #mktArchivos {
+  margin-top:20px;
+  padding:18px;
+  border:1px solid #d9e5f1;
+  border-radius:12px;
+  background:#f8fbff;
+}
+body[data-backend="conectado"] #mktArchivoProgreso {
+  height:10px;
+  accent-color:#17689c;
+}
+body[data-backend="conectado"] #mktArchivosLista .secondary {line-height:1.6}
+@media(max-width:760px){
+  body[data-backend="conectado"] #mktArchivos{padding:14px}
+  body[data-backend="conectado"] .mkt-shell-demo{font-size:9px;padding:6px 9px}
+}
