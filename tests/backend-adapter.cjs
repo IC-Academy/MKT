@@ -85,13 +85,20 @@ const tick=async(n=8)=>{for(let i=0;i<n;i++)await new Promise(r=>setTimeout(r,0)
   assert.ok(d.querySelector('#assigned').innerHTML.includes('Diseñador'),'Lista de responsables autorizados');
   assert.ok(d.querySelector('#detailHistory').textContent.includes('Solicitud creada'),'Historial del backend');
   assert.equal(d.querySelector('#evidence').disabled,true,'Sin enlaces públicos de evidencia');
+  assert.match(d.querySelector('#detailBody').textContent,/Información completa del formulario/,'Sección de formulario original');
+  assert.match(d.querySelector('#detailBody').textContent,/Post/,'Se muestra el campo original devuelto por MKT_03');
+  assert.equal(d.querySelector('#mktFechaCompromisoBox').hidden,false,'Administración puede gestionar fecha compromiso');
   // 4) Asignar + cambiar estatus → MKT_04 con claves de idempotencia
   d.querySelector('#assigned').value='recMys8xS4x9jDUKI';
   d.querySelector('#editStatus').value='En revision';
+  d.querySelector('#mktFechaCompromiso').value='2026-12-04';
+  d.querySelector('#comments').value='Avance QA: se asignó responsable y fecha.';
   d.querySelector('#editForm').dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));await tick(30);
   const upd=calls.filter(c=>c.url.endsWith('/actualizar'));
-  assert.deepEqual(upd.map(c=>c.body.accion),['asignar','cambiarEstado']);
-  assert.equal(upd[1].body.estadoActual,'Recibida');
+  assert.deepEqual(upd.map(c=>c.body.accion),['asignar','fechaCompromiso','cambiarEstado','comentar']);
+  assert.equal(upd[1].body.fechaCompromiso,'2026-12-04');
+  assert.equal(upd[2].body.estadoActual,'Recibida');
+  assert.equal(upd[3].body.comentario,'Avance QA: se asignó responsable y fecha.');
   assert.ok(upd.every(c=>/^[A-Za-z0-9_-]{16,64}$/.test(c.body.claveIdempotencia)),'Clave de idempotencia por operación');
   // 5) Rechazo exige motivo (no llama al backend)
   vm.runInContext("openDetail('MKT-2026-000012')",ctx);await tick(20);
