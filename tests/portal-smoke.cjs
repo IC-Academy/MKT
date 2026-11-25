@@ -20,8 +20,10 @@ vm.runInContext("window.MKT_CONFIG=Object.freeze({enabled:false,apiBase:'',timeo
 for(const file of scripts){if(file==='mkt-config.js')continue;vm.runInContext(fs.readFileSync(file,'utf8'),ctx,{filename:file});}
 const cardTitles=[...d.querySelectorAll('#formCards .card h2')].map(x=>x.textContent.trim());
 assert.ok(cardTitles.includes('Proyectos'),'Projects card missing');
-assert.ok(cardTitles.some(x=>/Campaña/i.test(x)),'Campaign card missing');
-assert.ok(cardTitles.some(x=>/Efectividad/i.test(x)),'Effectiveness card missing');
+assert.ok(!cardTitles.some(x=>/Campaña/i.test(x)),'Campaign card must remain paused');
+assert.ok(!cardTitles.some(x=>/Efectividad/i.test(x)),'Effectiveness card must remain paused');
+assert.equal(d.querySelector('#formCards [data-view="campana"]'),null,'Paused campaign entry point must be hidden');
+assert.equal(d.querySelector('#formCards [data-view="reporte"]'),null,'Paused effectiveness entry point must be hidden');
 assert.ok(d.querySelector('#cashCampaignForm'),'Cash campaign form missing');
 assert.ok(d.querySelector('#effectForm'),'Effectiveness form missing');
 assert.equal(d.querySelector('#campana-requested'),null,'Manual request date must be removed');
