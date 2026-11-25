@@ -312,6 +312,34 @@
     }).catch(e => { caja.innerHTML = '<p class="secondary">' + esc(errorTexto(e)) + '</p>'; });
   }
 
+  // Representación completa de datos de formulario devueltos por MKT_03.
+  // Se conserva la estructura del brief y se escapa cualquier texto del solicitante.
+  const nombresBrief = {
+    title: 'Título', objective: 'Objetivo', description: 'Descripción',
+    delivery: 'Tipo de entregable', format: 'Formato',
+    quantity: 'Cantidad', language: 'Idioma',
+    comments: 'Instrucciones adicionales', client: 'Cliente'
+  };
+  const etiquetaDato = clave => nombresBrief[clave] || String(clave).replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[_-]+/g, ' ').replace(/^./, c => c.toUpperCase());
+  function paresBrief(datos) {
+    const filas = [];
+    const recorrer = (obj, prefijo, nivel) => {
+      if (nivel > 5 || filas.length >= 150 || obj === null || obj === undefined || obj === '') return;
+      if (Array.isArray(obj)) {
+        if (!obj.length) return;
+        if (obj.every(v => v === null || ['string', 'number', 'boolean'].includes(typeof v))) {
+          filas.push([prefijo || 'Elementos', obj.map(v => v === null ? '—' : String(v)).join(', ')]);
+        } else obj.forEach((v, i) => recorrer(v, prefijo + ' · ' + (i + 1), nivel + 1));
+      } else if (typeof obj === 'object') {
+        Object.entries(obj).forEach(([k,v]) => recorrer(v, prefijo ? prefijo + ' / ' + etiquetaDato(k) : etiquetaDato(k), nivel + 1));
+      } else filas.push([prefijo || 'Dato', typeof obj === 'boolean' ? (obj ? 'Sí' : 'No') : String(obj)]);
+    };
+    recorrer(datos, '', 0);
+    return filas.length ? '<section class="mkt-full-brief" aria-label="Datos del formulario"><h3>Información completa del formulario</h3><dl class="comm-review">'
+      + filas.map(([k,v]) => '<div><dt>' + esc(k) + '</dt><dd>' + esc(v) + '</dd></div>').join('')
+      + '</dl></section>' : '<p class="secondary">El formulario no contiene campos adicionales registrados.</p>';
+  }
+
   // ---------- Detalle, historial y actualización (MKT_03 / MKT_04) ----------
   const openOriginal = window.openDetail;
   window.openDetail = function (folio) {
@@ -331,6 +359,19 @@
     // Sin enlaces de evidencia: los archivos se cargan y descargan mediante MKT_06 (SharePoint, sin enlaces públicos).
     const ev = $('#evidence'); ev.value = ''; ev.disabled = true; ev.closest('label').hidden = true;
     panelArchivos(r, s, esResp, esSol);
+    // Fecha compromiso editable exclusivamente por Administración; MKT_04 valida de nuevo el rol.
+    let fechaBox = $('#mktFechaCompromisoBox');
+    if (!fechaBox) {
+      fechaBox = document.createElement('label'); fechaBox.id = 'mktFechaCompromisoBox';
+      fechaBox.innerHTML = 'Fecha compromiso<input id="mktFechaCompromiso" type="date"><small class="secondary">La fecha se registra en el historial del backend.</small>';
+      $('#editForm .follow-up-section')?.append(fechaBox);
+    }
+    if (fechaBox) {
+      fechaBox.hidden = !esAdmin();
+      const fecha = $('#mktFechaCompromiso');
+      fecha.value = s.fechaCompromiso || '';
+      fecha.disabled = !esAdmin();
+    }
     $('#comments').placeholder = esSol && !esAdmin() ? (r.estado === 'Pendiente informacion' ? 'Responde la información solicitada.' : 'Agrega una observación para Marketing.') : 'Agrega un avance o una nota para el equipo.';
     // Responsables (solo Administración): candidatos activos con rol compatible, calculados en el servidor
     const asg = $('#assigned');
@@ -343,15 +384,22 @@
     }).catch(e => { $('#assignmentHelp').textContent = errorTexto(e); });
     // Historial y datos completos
     $('#detailHistory').innerHTML = '<p class="secondary">Cargando historial…</p>';
-    api.detalle(r.backendId).then(res => {
-      const d = res.solicitud;
-      const brief = $('#detailBody .brief'); if (brief) brief.textContent = d.descripcion || '';
-      const pares = Object.entries(d.datos || {}).filter(([, v]) => v !== '' && v !== null && typeof v !== 'object').slice(0, 40);
-      if (pares.length && typeof pairsHTML === 'function') $('#detailBody').insertAdjacentHTML('beforeend', pairsHTML(pares.map(([k, v]) => [k, String(v)])));
+    const detalleId = r.backendId;
+    const cuerpo = $('#detailBody');
+    cuerpo.querySelector('.mkt-full-brief')?.remove();
+    cuerpo.insertAdjacentHTML('beforeend', '<p id="mktBriefLoading" class="secondary" role="status">Consultando el formulario original…</p>');
+    api.detalle(detalleId).then(res => {
+      // No mezclar respuestas tardías al cambiar rápidamente de solicitud.
+      if (selected !== folio || !$('#detail').open) return;
+      const d = res.solicitud || {};
+      const brief = cuerpo.querySelector('.brief'); if (brief) brief.textContent = d.descripcion || 'Sin instrucciones principales registradas.';
+      cuerpo.querySelector('#mktBriefLoading')?.remove();
+      cuerpo.querySelector('.mkt-full-brief')?.remove();
+      cuerpo.insertAdjacentHTML('beforeend', paresBrief(d.datos || {}));
       $('#detailHistory').innerHTML = (d.historial || []).slice().reverse().map(h => '<div><span class="history-dot"></span><p><strong>' + esc(h.actor ? h.actor.nombre : 'Sistema') + '</strong><span>'
         + esc(h.evento + (h.estadoNuevo && h.estadoAnterior && h.estadoNuevo.valor !== h.estadoAnterior.valor ? ': ' + h.estadoAnterior.etiqueta + ' → ' + h.estadoNuevo.etiqueta : '') + (h.comentario ? ' · ' + h.comentario : ''))
-        + '</span><small>' + esc(new Date(h.fechaUTC).toLocaleString('es-MX')) + '</small></p></div>').join('') || '<p class="secondary">Sin eventos.</p>';
-    }).catch(e => { $('#detailHistory').innerHTML = '<p class="secondary">' + esc(errorTexto(e)) + '</p>'; });
+        + '</span><small>' + esc(h.fechaUTC ? new Date(h.fechaUTC).toLocaleString('es-MX') : 'Sin fecha') + '</small></p></div>').join('') || '<p class="secondary">Sin eventos.</p>';
+    }).catch(e => { if (selected !== folio || !$('#detail').open) return; cuerpo.querySelector('#mktBriefLoading')?.remove(); cuerpo.insertAdjacentHTML('beforeend','<p class="secondary">No se pudo cargar el formulario: ' + esc(errorTexto(e)) + '</p>'); $('#detailHistory').innerHTML = '<p class="secondary">' + esc(errorTexto(e)) + '</p>'; });
   };
 
   $('#editForm').onsubmit = async ev => {
@@ -361,13 +409,17 @@
     const s = cache[r.backendId] || {};
     const esResp = (s.responsables || []).some(p => p.id === perfil.id), esSol = (s.relacion || []).includes('propia');
     const nuevo = $('#editStatus').value, motivo = $('#reason').value.trim(), nota = $('#comments').value.trim(), resp = $('#assigned').value;
+    const fecha = esAdmin() ? ($('#mktFechaCompromiso')?.value || '') : '';
+    const cambiaFecha = esAdmin() && fecha && fecha !== (s.fechaCompromiso || '');
     if (REQUIERE_MOTIVO.includes(nuevo) && !motivo) { $('#reason').setCustomValidity('Escribe el motivo.'); $('#reason').reportValidity(); return; }
     const boton = $('#editForm button[type="submit"]'); boton.disabled = true;
     const hechos = [];
     try {
-      if (esAdmin() && resp && resp !== r.assignee) { await api.asignar(r.backendId, resp, nota || undefined); hechos.push('responsable asignado'); }
-      if (nuevo) { await api.cambiarEstado(r.backendId, r.estado, nuevo, motivo || nota || undefined); hechos.push('estatus: ' + etq(nuevo)); }
-      if (nota && !nuevo && !(esAdmin() && resp && resp !== r.assignee)) {
+      if (esAdmin() && resp && resp !== r.assignee) { await api.asignar(r.backendId, resp); hechos.push('responsable asignado'); }
+      if (cambiaFecha) { await api.fechaCompromiso(r.backendId, fecha); hechos.push('fecha compromiso: ' + fecha); }
+      if (nuevo) { await api.cambiarEstado(r.backendId, r.estado, nuevo, motivo || undefined); hechos.push('estatus: ' + etq(nuevo)); }
+      // Las notas son eventos propios: no se pierden al asignar o cambiar el estado.
+      if (nota) {
         const tipo = esAdmin() ? 'comentario' : esResp ? 'avance' : esSol ? (r.estado === 'Pendiente informacion' ? 'respuestaInformacion' : 'observacion') : 'comentario';
         await api.comentar(r.backendId, tipo, nota); hechos.push('comentario registrado');
       }
